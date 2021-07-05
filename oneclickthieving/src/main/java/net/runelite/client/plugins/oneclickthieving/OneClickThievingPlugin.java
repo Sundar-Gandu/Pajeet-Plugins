@@ -160,7 +160,7 @@ public class OneClickThievingPlugin extends Plugin
       WidgetItem coinpouch = getWidgetItem(coinPouches);
       if (config.enableCoinPouch() && coinpouch != null && coinpouch.getQuantity() == 28)
       {
-         event.setMenuEntry(new MenuEntry("Open-all", "Open-all", 22531, MenuAction.ITEM_FIRST_OPTION.getId(), coinpouch.getIndex(), 9764864, false));
+         event.setMenuEntry(new MenuEntry("Open-all", "Open-all", coinpouch.getId(), MenuAction.ITEM_FIRST_OPTION.getId(), coinpouch.getIndex(), 9764864, false));
          return;
       }
 
