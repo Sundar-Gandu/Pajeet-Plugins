@@ -10,8 +10,10 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Skill;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -88,6 +90,28 @@ public class OneClickThievingPlugin extends Plugin
    Set<Integer> foodBlacklist = Set.of(139,141,143,2434,3024,3026,3028,3030,24774);
    Set<Integer> coinPouches = Set.of(22521,22522,22523,22524,22525,22526,22527,22528,22529,22530,22531,22532,22533,22534,22535,22536,22537,22538,24703);
    private boolean shouldHeal = false;
+   private int prayerTimeOut = 0;
+
+   @Subscribe
+   public void onChatMessage(ChatMessage event)
+   {
+      if(event.getMessage().contains("You have run out of prayer points"))
+      {
+         log.info("prayer actually drained");
+         prayerTimeOut = 0;
+      }
+
+   }
+
+   @Subscribe
+   public void onStatChanged(StatChanged event)
+   {
+      if(event.getSkill() == Skill.PRAYER && event.getBoostedLevel() == 0 && prayerTimeOut == 0)
+      {
+         log.info("prayer drained");
+         prayerTimeOut = 10;
+      }
+   }
 
    @Subscribe
    public void onMenuOptionClicked(MenuOptionClicked event)
@@ -98,6 +122,11 @@ public class OneClickThievingPlugin extends Plugin
    @Subscribe
    public void onGameTick(GameTick event)
    {
+      if(prayerTimeOut>0)
+      {
+         prayerTimeOut--;
+      }
+
       if (client.getBoostedSkillLevel(Skill.HITPOINTS) >= Math.min(client.getRealSkillLevel(Skill.HITPOINTS),config.HPTopThreshold()))
       {
          shouldHeal = false;
@@ -174,7 +203,7 @@ public class OneClickThievingPlugin extends Plugin
 
       if(config.enablePray())
       {
-         if (client.getBoostedSkillLevel(Skill.PRAYER) == 0)
+         if (client.getBoostedSkillLevel(Skill.PRAYER) == 0 && prayerTimeOut == 0)
          {
             WidgetItem prayerPotion = getWidgetItem(prayerPotionIDs);
             if (prayerPotion != null)
