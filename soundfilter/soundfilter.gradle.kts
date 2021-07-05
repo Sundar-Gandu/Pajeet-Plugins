@@ -1,7 +1,7 @@
 version = "1.0.0"
 
-project.extra["PluginName"] = "soundfilter"
-project.extra["PluginDescription"] = "Filter ingame sounds based using a white/blacklist"
+project.extra["PluginName"] = "Sound Filter"
+project.extra["PluginDescription"] = "Filter ingame sounds using a white/blacklist"
 project.extra["ProjectSupportUrl"] = "https://github.com/Sundar-Gandu/Pajeet-Plugins"
 
 tasks {

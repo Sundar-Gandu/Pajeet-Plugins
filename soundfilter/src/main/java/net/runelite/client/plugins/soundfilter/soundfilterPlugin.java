@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Extension
 @PluginDescriptor(
       name = "Sound Filter",
-      description = "Filter ingame sounds based using a white/blacklist",
+      description = "Filter ingame sounds using a white/blacklist",
       tags = {"Sundar","sound"},
       enabledByDefault = false
 )

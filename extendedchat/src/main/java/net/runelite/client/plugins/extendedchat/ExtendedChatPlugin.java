@@ -41,7 +41,7 @@ import java.util.Map;
 @Extension
 @PluginDescriptor(
       name = "Chat Extended",
-      description = "Chat filtering, Ctrl+V pasting, and custom emojis",
+      description = "Chat filtering, Ctrl+V pasting, and retype previous message",
       tags = {"Sundar"},
       enabledByDefault = false
 )

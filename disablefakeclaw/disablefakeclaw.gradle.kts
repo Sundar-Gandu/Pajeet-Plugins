@@ -1,6 +1,6 @@
 version = "1.0.0"
 
-project.extra["PluginName"] = "disablefakeclaw"
+project.extra["PluginName"] = "Hide Fake Claws"
 project.extra["PluginDescription"] = "Disable animation of django claws"
 project.extra["ProjectSupportUrl"] = "https://github.com/Sundar-Gandu/Pajeet-Plugins"
 

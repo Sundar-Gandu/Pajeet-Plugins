@@ -16,7 +16,7 @@ import java.util.List;
 
 @Extension
 @PluginDescriptor(
-      name = "Hide Claw Animation",
+      name = "Hide Fake Claws",
       description = "Disable animation of django claws",
       tags = {"Sundar","claws","animation","pk"},
       enabledByDefault = false

@@ -1,6 +1,6 @@
 version = "1.0.0"
 
-project.extra["PluginName"] = "oneclickagility"
+project.extra["PluginName"] = "One Click Agility"
 project.extra["PluginDescription"] = "Reclined gaming"
 project.extra["ProjectSupportUrl"] = "https://github.com/Sundar-Gandu/Pajeet-Plugins"
 

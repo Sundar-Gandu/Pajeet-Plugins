@@ -1,6 +1,6 @@
 version = "1.0.0"
 
-project.extra["PluginName"] = "oneclickthieving"
+project.extra["PluginName"] = "One Click Pickpocket"
 project.extra["PluginDescription"] = "QOL for pickpocketing"
 project.extra["ProjectSupportUrl"] = "https://github.com/Sundar-Gandu/Pajeet-Plugins"
 
