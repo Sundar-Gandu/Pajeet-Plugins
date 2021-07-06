@@ -97,7 +97,6 @@ public class OneClickThievingPlugin extends Plugin
    {
       if(event.getMessage().contains("You have run out of prayer points"))
       {
-         log.info("prayer actually drained");
          prayerTimeOut = 0;
       }
 
@@ -108,7 +107,6 @@ public class OneClickThievingPlugin extends Plugin
    {
       if(event.getSkill() == Skill.PRAYER && event.getBoostedLevel() == 0 && prayerTimeOut == 0)
       {
-         log.info("prayer drained");
          prayerTimeOut = 10;
       }
    }
