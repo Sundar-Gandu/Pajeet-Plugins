@@ -262,8 +262,8 @@ public class OneClickAgilityPlugin extends Plugin
         }
 
         if(config.seersTele() && config.courseSelection() == AgilityCourse.SEERS_VILLAGE)
-        {   //spellbook varbit
-            if(client.getVarbitValue(4070) == 0 && client.getLocalPlayer().getWorldLocation().equals(SEERS_END))
+        {   //spellbook varbit, worldpoint of dropdown tile, teleportation animation ID
+            if(client.getVarbitValue(4070) == 0 && client.getLocalPlayer().getWorldLocation().equals(SEERS_END) && client.getLocalPlayer().getAnimation() != 714)
             {
                 event.setMenuEntry(createSeersTeleportMenuEntry());
                 return;
