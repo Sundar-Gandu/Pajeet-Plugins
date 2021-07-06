@@ -52,7 +52,7 @@ public class ObstacleArea
     {
         if (nextObstacle != null)
         {
-            log.info(nextObstacle.getActions()[0] + ", " + nextObstacle.getName() + ", " + nextObstacle.getId() + ", " + "MenuAction.GAME_OBJECT_FIRST_OPTION.getId()" + ", " + getObjectParam(nextObstacle) + ", " + getObjectParam1(nextObstacle));
+            log.debug(nextObstacle.getActions()[0] + ", " + nextObstacle.getName() + ", " + nextObstacle.getId() + ", " + "MenuAction.GAME_OBJECT_FIRST_OPTION.getId()" + ", " + getObjectParam(nextObstacle) + ", " + getObjectParam1(nextObstacle));
             return new MenuEntry(nextObstacle.getActions()[0], nextObstacle.getName(),nextObstacle.getId(), MenuAction.GAME_OBJECT_FIRST_OPTION.getId(), getObjectParam(nextObstacle),getObjectParam1(nextObstacle),true);
         }
         return null;
