@@ -298,6 +298,11 @@ public class OneClickAgilityPlugin extends Plugin
                 }
             }
         }
+        if(config.consumeMisclicks() && client.getLocalPlayer().isMoving())
+        {
+            event.consume();
+            return;
+        }
         event.setMenuEntry(obstacleArea.createMenuEntry());
     }
 
