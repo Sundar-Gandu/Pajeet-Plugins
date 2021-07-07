@@ -26,10 +26,11 @@
 rootProject.name = "Sundar External Plugins"
 
 include(":disablefakeclaw")
-include(":soundfilter")
 include(":extendedchat")
 include(":oneclickthieving")
 include(":oneclickagility")
+include(":soundfilter")
+include(":tradewindow")
 
 
 for (project in rootProject.children) {
