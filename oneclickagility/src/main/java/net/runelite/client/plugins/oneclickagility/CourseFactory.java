@@ -89,7 +89,7 @@ public class CourseFactory
                 return new Course(
                         new ArrayList<>(Arrays.asList(14927, 14928, 14932, 14929, 14930, 14931)),
                         new ArrayList<>(Arrays.asList(
-                                new ObstacleArea(2704,2733,3456,3490,0,14927),
+                                new ObstacleArea(2704,2733,3456,3495,0,14927),
                                 new ObstacleArea(2721,2730,3490,3497,3,14928),
                                 new ObstacleArea(2704,2714,3487,3497,2,14932),
                                 new ObstacleArea(2709,2716,3476,3482,2,14929),
