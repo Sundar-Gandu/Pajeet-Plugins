@@ -40,12 +40,12 @@ public class CourseFactory
                 return new Course(
                         new ArrayList<>(Arrays.asList(14412, 14413, 14414, 14832, 14833, 14834, 14835, 14836, 14841)),
                         new ArrayList<>(Arrays.asList(
-                                new ObstacleArea(3190,3236,3407,3419,0,14412),
+                                new ObstacleArea(3190,3241,3407,3419,0,14412),
                                 new ObstacleArea(3214,3220,3410,3419,3,14413),
                                 new ObstacleArea(3201,3208,3414,3417,3,14414),
                                 new ObstacleArea(3193,3197,3416,3416,1,14832),
                                 new ObstacleArea(3192,3198,3402,3406,3,14833),
-                                new ObstacleArea(3191,3208,3395,3404,3,14834),
+                                new ObstacleArea(3182,3208,3382,3404,3,14834),
                                 new ObstacleArea(3218,3232,3393,3404,3,14835),
                                 new ObstacleArea(3236,3240,3403,3409,3,14836),
                                 new ObstacleArea(3236,3240,3410,3415,3,14841)
