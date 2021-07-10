@@ -169,6 +169,38 @@ public class CourseFactory
                                 new ObstacleArea(2755,2761,2727,2735,0,16062)
                         ))
                 );
+            case AGILITY_PYRAMID:
+                return new PyramidCourse(
+                        new ArrayList<>(Arrays.asList(10857, 10865, 10860, 10868, 10882, 10886, 10884, 10859, 10861, 10888, 10855)),
+                        new ArrayList<>(Arrays.asList(
+                                new ObstacleArea(3349,3380,2824,2858,0,10857),
+                                new ObstacleArea(3354,3355,2833,2849,1,10865),
+                                new ObstacleArea(3354,3365,2850,2852,1,10860),
+                                new ObstacleArea(3368,3375,2845,2852,1,10868),
+                                new ObstacleArea(3370,3375,2831,2840,1,10882),
+                                new ObstacleArea(3362,3367,2831,2832,1,10886),
+                                new ObstacleArea(3356,3359,2831,2834,1,10857),
+                                new ObstacleArea(3356,3357,2835,2838,2,10884),
+                                new ObstacleArea(3356,3357,2841,2848,2,10859),
+                                new ObstacleArea(3356,3361,2849,2850,2,10861),
+                                new ObstacleArea(3364,3373,2839,2850,2,10860),
+                                new ObstacleArea(3370,3373,2833,2836,2,10865),
+                                new ObstacleArea(3364,3369,2833,2834,2,10859),
+                                new ObstacleArea(3358,3363,2833,2836,2,10857),
+                                new ObstacleArea(3358,3359,2837,2839,3,10865),
+                                new ObstacleArea(3358,3359,2840,2844,3,10888),
+                                new ObstacleArea(3358,3371,2841,2848,3,10859),
+                                new ObstacleArea(3370,3371,2835,2840,3,10868),
+                                new ObstacleArea(3360,3365,2835,2838,3,10857),
+                                new ObstacleArea(3040,3041,4695,4698,2,10859),
+                                new ObstacleArea(3040,3042,4699,4702,2,10865),
+                                new ObstacleArea(3043,3049,4695,4702,2,10859),
+                                new ObstacleArea(3047,3049,4693,4694,2,10865),
+                                new ObstacleArea(3042,3046,4693,4696,2,10857),
+                                new ObstacleArea(3042,3047,4697,4700,3,10859),
+                                new ObstacleArea(3044,3047,4695,4696,3,10855)
+                        ))
+                );
             default:
                 return null;
 

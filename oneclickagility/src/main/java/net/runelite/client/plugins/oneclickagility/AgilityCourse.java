@@ -13,4 +13,5 @@ public enum AgilityCourse
     ARDOUGNE,
     PRIFDDINAS,
     APE_ATOLL,
+    AGILITY_PYRAMID
 }

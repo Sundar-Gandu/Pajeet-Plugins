@@ -70,9 +70,13 @@ public class OneClickAgilityPlugin extends Plugin
     private static final Set<Integer> PORTAL_IDS = Set.of(36241,36242,36243,36244,36245,36246);
     private static final Set<Integer> SUMMER_PIE_ID = Set.of(7220,7218);
     private static final WorldPoint SEERS_END = new WorldPoint(2704,3464,0);
+    private static final WorldPoint PYRAMID_TOP_RIGHT = new WorldPoint(3043,4697,3);
+    private static final WorldPoint PYRAMID_TOP_LEFT = new WorldPoint(3042,4697,3);
 
     ArrayList<Tile> marks = new ArrayList<>();
     ArrayList<GameObject> portals = new ArrayList<>();
+    DecorativeObject pyramidTopObstacle;
+    GameObject pyramidTop;
     Course course;
 
     @Override
@@ -104,6 +108,12 @@ public class OneClickAgilityPlugin extends Plugin
         if(event.getMenuOption().equals("<col=00ff00>One Click Agility"))
         {
             handleClick(event);
+            log.debug(event.getMenuOption()+ ", "
+                    + event.getMenuTarget() + ", "
+                    + event.getId() + ", "
+                    + event.getMenuAction().name() + ", "
+                    + event.getActionParam() + ", "
+                    + event.getWidgetId() );
         }
         else if(event.getMenuOption().equals("One Click Agility"))
         {
@@ -150,11 +160,17 @@ public class OneClickAgilityPlugin extends Plugin
         {
             return;
         }
+
+        if(event.getGameObject().getId() == 10869)
+        {
+            pyramidTop = event.getGameObject();
+        }
         if (PORTAL_IDS.contains(event.getGameObject().getId()))
         {
             portals.add(event.getGameObject());
             return;
         }
+
         addToCourse(event.getGameObject().getId(), event.getGameObject());
     }
 
@@ -169,6 +185,10 @@ public class OneClickAgilityPlugin extends Plugin
         {
             portals.remove(event.getGameObject());
             return;
+        }
+        if(event.getGameObject().getId() == 10869)
+        {
+            pyramidTop = null;
         }
         removeFromCourse(event.getGameObject().getId(), event.getGameObject());
     }
@@ -190,12 +210,27 @@ public class OneClickAgilityPlugin extends Plugin
     @Subscribe
     public void DecorativeObjectSpawned(DecorativeObjectSpawned event)
     {
+        if(event.getDecorativeObject().getId() == 10851)
+        {
+            if(pyramidTopObstacle == null || pyramidTopObstacle.getY() > event.getDecorativeObject().getY())
+            {
+                pyramidTopObstacle = event.getDecorativeObject();
+                return;
+            }
+        }
+
         addToCourse(event.getDecorativeObject().getId(), event.getDecorativeObject());
     }
 
     @Subscribe
     public void DecorativeObjectDespawned(DecorativeObjectDespawned event)
     {
+        if(event.getDecorativeObject().getId() == 10851 && event.getDecorativeObject() == pyramidTopObstacle)
+        {
+            pyramidTopObstacle = null;
+            return;
+        }
+
         removeFromCourse(event.getDecorativeObject().getId(), event.getDecorativeObject());
     }
 
@@ -270,6 +305,16 @@ public class OneClickAgilityPlugin extends Plugin
             }
         }
 
+        if(config.courseSelection() == AgilityCourse.AGILITY_PYRAMID)
+        {
+            if((client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_RIGHT) || client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_LEFT))
+                    && pyramidTop.getRenderable().getModelHeight() == 309)
+            {
+                event.setMenuEntry(createPyramidTopMenuEntry());
+                return;
+            }
+        }
+
         ObstacleArea obstacleArea = course.getCurrentObstacleArea(client.getLocalPlayer());
         if (obstacleArea == null)
         {
@@ -303,6 +348,7 @@ public class OneClickAgilityPlugin extends Plugin
             event.consume();
             return;
         }
+
         event.setMenuEntry(obstacleArea.createMenuEntry());
     }
 
@@ -368,5 +414,17 @@ public class OneClickAgilityPlugin extends Plugin
         );
     }
 
+    private MenuEntry createPyramidTopMenuEntry()
+    {
+        return new MenuEntry(
+                "Climb",
+                "Climbing rocks",
+                pyramidTopObstacle.getId(),
+                MenuAction.GAME_OBJECT_FIRST_OPTION.getId(),
+                pyramidTopObstacle.getLocalLocation().getSceneX(),
+                pyramidTopObstacle.getLocalLocation().getSceneY(),
+                true
+        );
+    }
 
 }
