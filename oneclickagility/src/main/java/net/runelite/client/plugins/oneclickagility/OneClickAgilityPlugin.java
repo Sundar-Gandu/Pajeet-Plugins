@@ -2,7 +2,15 @@ package net.runelite.client.plugins.oneclickagility;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.Skill;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.DecorativeObjectDespawned;
@@ -171,7 +179,7 @@ public class OneClickAgilityPlugin extends Plugin
             return;
         }
 
-        addToCourse(event.getGameObject().getId(), event.getGameObject());
+        addToCourse(event.getGameObject());
     }
 
     @Subscribe
@@ -190,20 +198,20 @@ public class OneClickAgilityPlugin extends Plugin
         {
             pyramidTop = null;
         }
-        removeFromCourse(event.getGameObject().getId(), event.getGameObject());
+        removeFromCourse(event.getGameObject());
     }
 
     @Subscribe
     public void onWallObjectSpawned(WallObjectSpawned event)
     {
-        addToCourse(event.getWallObject().getId(), event.getWallObject());
+        addToCourse(event.getWallObject());
     }
 
 
     @Subscribe
     public void onWallObjectDespawned(WallObjectDespawned event)
     {
-        removeFromCourse(event.getWallObject().getId(), event.getWallObject());
+        removeFromCourse(event.getWallObject());
     }
 
 
@@ -219,7 +227,7 @@ public class OneClickAgilityPlugin extends Plugin
             }
         }
 
-        addToCourse(event.getDecorativeObject().getId(), event.getDecorativeObject());
+        addToCourse(event.getDecorativeObject());
     }
 
     @Subscribe
@@ -231,19 +239,19 @@ public class OneClickAgilityPlugin extends Plugin
             return;
         }
 
-        removeFromCourse(event.getDecorativeObject().getId(), event.getDecorativeObject());
+        removeFromCourse(event.getDecorativeObject());
     }
 
     @Subscribe
     public void onGroundObjectSpawned(GroundObjectSpawned event)
     {
-        addToCourse(event.getGroundObject().getId(), event.getGroundObject());
+        addToCourse(event.getGroundObject());
     }
 
     @Subscribe
     public void onGroundObjectDespawned(GroundObjectDespawned event)
     {
-        removeFromCourse(event.getGroundObject().getId(), event.getGroundObject());
+        removeFromCourse(event.getGroundObject());
     }
 
     @Subscribe
@@ -264,17 +272,17 @@ public class OneClickAgilityPlugin extends Plugin
         }
     }
 
-    private void addToCourse(int id, TileObject tileObject)
+    private void addToCourse(TileObject tileObject)
     {
-        if (course.obstacleIDs.contains(id))
+        if (course.obstacleIDs.contains(tileObject.getId()))
         {
             course.addObstacle(tileObject);
         }
     }
 
-    private void removeFromCourse(int id, TileObject tileObject)
+    private void removeFromCourse(TileObject tileObject)
     {
-        if (course.obstacleIDs.contains(id))
+        if (course.obstacleIDs.contains(tileObject.getId()))
         {
             course.removeObstacle(tileObject);
         }
