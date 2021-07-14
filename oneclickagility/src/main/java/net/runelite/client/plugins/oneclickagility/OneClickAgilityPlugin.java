@@ -10,6 +10,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Skill;
 import net.runelite.api.Tile;
+import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
@@ -39,6 +40,7 @@ import org.pf4j.Extension;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Extension
@@ -116,7 +118,7 @@ public class OneClickAgilityPlugin extends Plugin
         if(event.getMenuOption().equals("<col=00ff00>One Click Agility"))
         {
             handleClick(event);
-            log.debug(event.getMenuOption()+ ", "
+            log.info(event.getMenuOption()+ ", "
                     + event.getMenuTarget() + ", "
                     + event.getId() + ", "
                     + event.getMenuAction().name() + ", "
@@ -331,13 +333,28 @@ public class OneClickAgilityPlugin extends Plugin
 
         if (!marks.isEmpty())
         {
+            Tile wrongMarkTile = null;
             for (Tile mark : marks)
             {
                 if (obstacleArea.containsObject(mark))
                 {
-                    event.setMenuEntry(createMarkMenuEntry(mark));
-                    return;
+                    Tile markTile = client.getScene().getTiles()[mark.getRenderLevel()][mark.getSceneLocation().getX()][mark.getSceneLocation().getY()];
+
+                    if (markTile != null && checkTileForMark(markTile))
+                    {
+                        event.setMenuEntry(createMarkMenuEntry(mark));
+                        return;
+                    }
+                    else
+                    {
+                        wrongMarkTile = mark;
+                    }
                 }
+            }
+
+            if(wrongMarkTile != null)
+            {
+                marks.remove(wrongMarkTile);
             }
         }
         if (!portals.isEmpty())
@@ -358,6 +375,27 @@ public class OneClickAgilityPlugin extends Plugin
         }
 
         event.setMenuEntry(obstacleArea.createMenuEntry());
+    }
+
+    private boolean checkTileForMark(Tile tile)
+    {
+        List<TileItem> items = tile.getGroundItems();
+        if (items == null)
+        {
+            log.info("no item found");
+            return false;
+        }
+
+        for (TileItem item:items)
+        {
+            if (item == null)
+                continue;
+
+            if(item.getId() == MARK_ID)
+                return true;
+        }
+        log.info("no matching item found");
+        return false;
     }
 
     public WidgetItem getWidgetItem(Collection<Integer> ids) {
