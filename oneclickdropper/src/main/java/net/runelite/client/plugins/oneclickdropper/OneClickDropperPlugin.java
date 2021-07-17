@@ -116,7 +116,7 @@ public class OneClickDropperPlugin extends Plugin
    {
       if(client.getLocalPlayer() == null
               || client.getGameState() != GameState.LOGGED_IN
-              || client.getWidget(WidgetInfo.BANK_CONTAINER) != null
+              || client.getItemContainer(InventoryID.BANK) != null
               || client.getWidget(WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER) != null
       )
          return;
