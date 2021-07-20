@@ -56,7 +56,7 @@ public class CourseFactory
                         new ArrayList<>(Arrays.asList(14843, 14844, 14845, 14848, 14846, 14894, 14847, 14897)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(3480,3516,3471,3506,0,14843),
-                                new ObstacleArea(3504,3508,3491,3498,2,14844),
+                                new ObstacleArea(3504,3510,3491,3498,2,14844),
                                 new ObstacleArea(3496,3504,3503,3507,2,14845),
                                 new ObstacleArea(3485,3493,3498,3505,2,14848),
                                 new ObstacleArea(3474,3480,3491,3499,3,14846),
