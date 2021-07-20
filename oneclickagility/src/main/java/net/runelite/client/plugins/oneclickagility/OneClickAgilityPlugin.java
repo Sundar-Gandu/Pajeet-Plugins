@@ -338,7 +338,7 @@ public class OneClickAgilityPlugin extends Plugin
             {
                 if (obstacleArea.containsObject(mark))
                 {
-                    Tile markTile = client.getScene().getTiles()[mark.getRenderLevel()][mark.getSceneLocation().getX()][mark.getSceneLocation().getY()];
+                    Tile markTile = client.getScene().getTiles()[mark.getPlane()][mark.getSceneLocation().getX()][mark.getSceneLocation().getY()];
 
                     if (markTile != null && checkTileForMark(markTile))
                     {
