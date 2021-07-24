@@ -331,7 +331,7 @@ public class OneClickAgilityPlugin extends Plugin
             return;
         }
 
-        if (!marks.isEmpty())
+        if (config.pickUpMarks() && !marks.isEmpty())
         {
             Tile wrongMarkTile = null;
             for (Tile mark : marks)
@@ -368,7 +368,9 @@ public class OneClickAgilityPlugin extends Plugin
                 }
             }
         }
-        if(config.consumeMisclicks() && client.getLocalPlayer().isMoving())
+        if(config.consumeMisclicks() &&
+                (client.getLocalPlayer().isMoving()
+                        || client.getLocalPlayer().getPoseAnimation() != client.getLocalPlayer().getIdlePoseAnimation()))
         {
             event.consume();
             return;

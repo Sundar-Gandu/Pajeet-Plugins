@@ -62,12 +62,23 @@ public interface OneClickAgilityConfig extends Config
     }
 
     @ConfigItem(
-            position = 3,
+            position = 4,
             keyName = "consumeMisclicks",
             name = "Stop Misclicks",
             description = "Allows you to spam left click"
     )
     default boolean consumeMisclicks()
+    {
+        return true;
+    }
+
+    @ConfigItem(
+            position = 5,
+            keyName = "pickUpMarks",
+            name = "Pick up Marks of Grace",
+            description = "Pick up Marks of Grace"
+    )
+    default boolean pickUpMarks()
     {
         return true;
     }
