@@ -13,5 +13,7 @@ public enum AgilityCourse
     ARDOUGNE,
     PRIFDDINAS,
     APE_ATOLL,
-    AGILITY_PYRAMID
+    AGILITY_PYRAMID,
+    SHAYZIEN_BASIC,
+    SHAYZIEN_ADVANCED
 }
