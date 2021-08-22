@@ -122,8 +122,8 @@ public class OneClickAgilityPlugin extends Plugin
                     + event.getMenuTarget() + ", "
                     + event.getId() + ", "
                     + event.getMenuAction().name() + ", "
-                    + event.getActionParam() + ", "
-                    + event.getWidgetId() );
+                    + event.getParam0() + ", "
+                    + event.getParam1());
         }
         else if(event.getMenuOption().equals("One Click Agility"))
         {
@@ -440,10 +440,10 @@ public class OneClickAgilityPlugin extends Plugin
 
     private MenuEntry createMarkMenuEntry(Tile tile)
     {
-        log.debug("Take" + ", " + "Mark of Grace" + ", " + MARK_ID + ", " + "MenuAction.GROUND_ITEM_THIRD_OPTION.getId()" + ", " + tile.getSceneLocation().getX() + ", " + tile.getSceneLocation().getY());
         return new MenuEntry("Take",
                 "Mark of Grace",
-                MARK_ID,MenuAction.GROUND_ITEM_THIRD_OPTION.getId(),
+                MARK_ID,
+                MenuAction.GROUND_ITEM_THIRD_OPTION.getId(),
                 tile.getSceneLocation().getX(),
                 tile.getSceneLocation().getY(),
                 true);
