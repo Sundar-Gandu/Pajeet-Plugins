@@ -181,17 +181,26 @@ public class OneClickDropperPlugin extends Plugin
          for(int i = 0; i <= 27; i++)
          {
             int index = config.customDrop() ? dropOrder.get(i) : i;
-            WidgetItem item = new  InventoryWidgetItemQuery()
-                    .idEquals(ids)
-                    .indexEquals(index)
-                    .result(client)
-                    .first();
+            WidgetItem item = getItemAtIndex(index);
             if (item != null)
             {
                matchedItems.add(item);
             }
          }
          return matchedItems;
+      }
+      return null;
+   }
+
+   public WidgetItem getItemAtIndex(int index) {
+      Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+      if (inventoryWidget != null) {
+         Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
+         for (WidgetItem item : items) {
+            if (item.getIndex() == index) {
+               return item;
+            }
+         }
       }
       return null;
    }
