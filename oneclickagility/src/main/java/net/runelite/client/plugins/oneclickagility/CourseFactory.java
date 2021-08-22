@@ -201,6 +201,33 @@ public class CourseFactory
                                 new ObstacleArea(3044,3047,4695,4696,3,10855)
                         ))
                 );
+            case SHAYZIEN_BASIC:
+                return new Course(
+                        new ArrayList<>(Arrays.asList(42209, 42211, 42212, 42214, 42215, 42216, 42209, 42213)),
+                        new ArrayList<>(Arrays.asList(
+                                new ObstacleArea(1551, 1557, 3637, 3641, 0, 42209),
+                                new ObstacleArea(1553, 1555, 3631, 3634, 3, 42211),
+                                new ObstacleArea(1538, 1542, 3630, 3635, 2, 42212),
+                                new ObstacleArea(1527, 1529, 3632, 3634, 2, 42213),
+                                new ObstacleArea(1522, 1523, 3643, 3435, 3, 42214),
+                                new ObstacleArea(1538, 1539, 3643, 3645, 2, 42215),
+                                new ObstacleArea(1552, 1556, 3643, 3644, 2, 42216)
+                        ))
+                );
+            case SHAYZIEN_ADVANCED:
+                return new Course(
+                        new ArrayList<>(Arrays.asList(42209, 42211, 42212, 42214, 42215, 42216, 42209, 42218, 42219, 42220, 42221, 42217)),
+                        new ArrayList<>(Arrays.asList(
+                                new ObstacleArea(1520, 1535, 3624, 3628, 0, 42209),
+                                new ObstacleArea(1553, 1555, 3631, 3634, 3, 42211),
+                                new ObstacleArea(1538, 1542, 3630, 3635, 2, 42212),
+                                new ObstacleArea(1527, 1529, 3632, 3634, 2, 42217),
+                                new ObstacleArea(1510, 1512, 3636, 3638, 2, 42218),
+                                new ObstacleArea(1509, 1511, 3629, 3631, 2, 42219),
+                                new ObstacleArea(1509, 1510, 3618, 3620, 2, 42220),
+                                new ObstacleArea(1520, 1523, 3618, 3619, 2, 42221)
+                        ))
+                );
             default:
                 return null;
 
