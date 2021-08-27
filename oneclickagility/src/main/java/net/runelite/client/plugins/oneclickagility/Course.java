@@ -5,6 +5,7 @@ import net.runelite.api.Player;
 import net.runelite.api.TileObject;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,8 +17,16 @@ public class Course
     List<Integer> obstacleIDs;
     List<ObstacleArea> obstacleAreaList;
 
-    Course(List<Integer> obstacleIDs, List<ObstacleArea> obstacleAreaList)
+    Course(List<ObstacleArea> obstacleAreaList)
     {
+        List<Integer> obstacleIDs = new ArrayList<>();
+        for (ObstacleArea area : obstacleAreaList)
+        {
+            if (!obstacleIDs.contains(area.getNextObstacleID()))
+            {
+                obstacleIDs.add(area.getNextObstacleID());
+            }
+        }
         this.obstacleIDs = obstacleIDs;
         this.obstacleAreaList = obstacleAreaList;
     }

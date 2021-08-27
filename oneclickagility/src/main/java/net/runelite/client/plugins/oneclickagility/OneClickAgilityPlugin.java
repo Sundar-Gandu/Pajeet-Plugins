@@ -357,6 +357,7 @@ public class OneClickAgilityPlugin extends Plugin
                 marks.remove(wrongMarkTile);
             }
         }
+
         if (!portals.isEmpty())
         {
             for(GameObject portal:portals)
@@ -368,6 +369,7 @@ public class OneClickAgilityPlugin extends Plugin
                 }
             }
         }
+
         if(config.consumeMisclicks() &&
                 (client.getLocalPlayer().isMoving()
                         || client.getLocalPlayer().getPoseAnimation() != client.getLocalPlayer().getIdlePoseAnimation()))

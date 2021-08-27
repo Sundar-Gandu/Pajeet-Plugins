@@ -6,9 +6,9 @@ import java.util.List;
 
 public class PyramidCourse extends Course
 {
-    PyramidCourse(List<Integer> obstacleIDs, List<ObstacleArea> obstacleAreaList)
+    PyramidCourse(List<ObstacleArea> obstacleAreaList)
     {
-        super(obstacleIDs, obstacleAreaList);
+        super(obstacleAreaList);
     }
 
     @Override

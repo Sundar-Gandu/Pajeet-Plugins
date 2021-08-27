@@ -11,7 +11,6 @@ public class CourseFactory
         {
             case DRAYNOR_VILLAGE:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(11404, 11405, 11406, 11430, 11630, 11631, 11632)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(3087,3108,3250,3278,0,11404),
                                 new ObstacleArea(3097,3102,3277,3281,3,11405),
@@ -24,7 +23,6 @@ public class CourseFactory
                 );
             case AL_KHARID:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(11633, 14398, 14402, 14403, 14404, 11634, 14409, 14399)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(3268,3312,3158,3201,0,11633),
                                 new ObstacleArea(3271,3278,3180,3192,3,14398),
@@ -38,7 +36,6 @@ public class CourseFactory
                 );
             case VARROCK:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(14412, 14413, 14414, 14832, 14833, 14834, 14835, 14836, 14841)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(3190,3241,3407,3419,0,14412),
                                 new ObstacleArea(3214,3220,3410,3419,3,14413),
@@ -53,7 +50,6 @@ public class CourseFactory
                 );
             case CANIFIS:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(14843, 14844, 14845, 14848, 14846, 14894, 14847, 14897)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(3480,3516,3471,3506,0,14843),
                                 new ObstacleArea(3504,3510,3491,3498,2,14844),
@@ -67,7 +63,6 @@ public class CourseFactory
                 );
             case FALADOR:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(14898, 14899, 14901, 14903, 14904, 14905, 14911, 14919, 14920, 14921, 14922, 14923, 14924, 14925)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(3020,3055,3331,3367,0,14898),
                                 new ObstacleArea(3036,3040,3342,3343,3,14899),
@@ -87,7 +82,6 @@ public class CourseFactory
                 );
             case SEERS_VILLAGE:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(14927, 14928, 14932, 14929, 14930, 14931)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(2704,2733,3456,3495,0,14927),
                                 new ObstacleArea(2721,2730,3490,3497,3,14928),
@@ -99,7 +93,6 @@ public class CourseFactory
                 );
             case POLLNIVNEACH:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(14935, 14936, 14937, 14938, 14939, 14940, 14941, 14944, 14945)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(3345,3375,2957,3003,0,14935),
                                 new ObstacleArea(3346,3351,2963,2968,1,14936),
@@ -114,7 +107,6 @@ public class CourseFactory
                 );
             case RELLEKKA:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(14946, 14947, 14987, 14990, 14991, 14992, 14994)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(2622,2653,3656,3682,0,14946),
                                 new ObstacleArea(2622,2626,3672,3676,3,14947),
@@ -127,7 +119,6 @@ public class CourseFactory
                 );
             case ARDOUGNE:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(15608, 15609, 26635, 15610, 15611, 28912, 15612)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(2650,2674,3293,3319,0,15608),
                                 new ObstacleArea(2671,2671,3299,3309,3,15609),
@@ -140,7 +131,6 @@ public class CourseFactory
                 );
             case PRIFDDINAS:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(36221, 36225, 36227, 36228, 36229, 36231, 36232, 36233, 36234, 36235, 36236, 36237, 36238)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(3239,3275,6102,6112,0,36221),
                                 new ObstacleArea(3255,3257,6102,6112,2,36225),
@@ -159,7 +149,6 @@ public class CourseFactory
                 );
             case APE_ATOLL:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(15412, 15414, 15417, 15483, 15487, 16062)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(2755,2772,2741,2755,0,15412),
                                 new ObstacleArea(2751,2753,2741,2742,0,15414),
@@ -171,7 +160,6 @@ public class CourseFactory
                 );
             case AGILITY_PYRAMID:
                 return new PyramidCourse(
-                        new ArrayList<>(Arrays.asList(10857, 10865, 10860, 10868, 10882, 10886, 10884, 10859, 10861, 10888, 10855)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(3349,3380,2824,2858,0,10857),
                                 new ObstacleArea(3354,3355,2833,2849,1,10865),
@@ -203,7 +191,6 @@ public class CourseFactory
                 );
             case SHAYZIEN_BASIC:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(42209, 42211, 42212, 42214, 42215, 42216, 42209, 42213)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(1551, 1557, 3637, 3641, 0, 42209),
                                 new ObstacleArea(1553, 1555, 3631, 3634, 3, 42211),
@@ -216,7 +203,6 @@ public class CourseFactory
                 );
             case SHAYZIEN_ADVANCED:
                 return new Course(
-                        new ArrayList<>(Arrays.asList(42209, 42211, 42212, 42214, 42215, 42216, 42209, 42218, 42219, 42220, 42221, 42217)),
                         new ArrayList<>(Arrays.asList(
                                 new ObstacleArea(1520, 1535, 3624, 3628, 0, 42209),
                                 new ObstacleArea(1553, 1555, 3631, 3634, 3, 42211),
