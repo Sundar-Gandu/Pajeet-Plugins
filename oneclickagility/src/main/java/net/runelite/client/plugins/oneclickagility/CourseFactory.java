@@ -1,5 +1,7 @@
 package net.runelite.client.plugins.oneclickagility;
 
+import net.runelite.api.coords.WorldPoint;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -212,6 +214,51 @@ public class CourseFactory
                                 new ObstacleArea(1509, 1511, 3629, 3631, 2, 42219),
                                 new ObstacleArea(1509, 1510, 3618, 3620, 2, 42220),
                                 new ObstacleArea(1520, 1523, 3618, 3619, 2, 42221)
+                        ))
+                );
+            case PENGUIN_COURSE:
+                return new Course(
+                        new ArrayList<>(Arrays.asList(
+                                new ObstacleArea(2652, 2664, 4032, 4041, 1, 21172),
+                                new ObstacleArea(2633, 2651, 4032, 4056, 1,21126),
+                                new SpecificObstacleArea(2627, 2635, 4052, 4065, 0,
+                                        21120, new WorldPoint(2630, 4057, 0)),
+                                new ObstacleArea(2630, 2630, 4057, 4057, 1,21126),
+                                new ObstacleArea(2631, 2631, 4057, 4057, 1,21128),
+                                new ObstacleArea(2631, 2631, 4059, 4059, 1,21129),
+                                new ObstacleArea(2633, 2633, 4059, 4059, 1,21130),
+                                new ObstacleArea(2635, 2635, 4059, 4059, 1,21131),
+                                new ObstacleArea(2635, 2635, 4061, 4061, 1,21132),
+                                new ObstacleArea(2635, 2635, 4063, 4063, 1,21133),
+                                new SpecificObstacleArea(2633,2644,4065,4087,1,
+                                        21134, new WorldPoint(2644, 4083, 1)),
+                                new SpecificObstacleArea(2645,2652,4079,4087,1,
+                                        21134, new WorldPoint(2652, 4080, 1)),
+                                new SpecificObstacleArea(2653,2658,4078,4084,1,
+                                        21134, new WorldPoint(2658, 4082, 1)),
+                                new SpecificObstacleArea(2659,2662,4082,4086,1,
+                                        21134, new WorldPoint(2662, 4082, 1)),
+                                new ObstacleArea(2663, 2668, 4078, 4086, 1,21148),
+                                new SpecificObstacleArea(2665,2665,4077,4077,1,
+                                        21149,new WorldPoint(2665, 4076, 1)),
+                                new SpecificObstacleArea(2665,2665,4076,4076,1,
+                                        21150,new WorldPoint(2665, 4075, 1)),
+                                new SpecificObstacleArea(2665,2665,4075,4075,1,
+                                        21151,new WorldPoint(2665, 4074, 1)),
+                                new SpecificObstacleArea(2665,2665,4074,4074,1,
+                                        21152,new WorldPoint(2665, 4073, 1)),
+                                new SpecificObstacleArea(2665,2665,4073,4073,1,
+                                        21153,new WorldPoint(2665, 4072, 1)),
+                                new SpecificObstacleArea(2665,2665,4072,4072,1,
+                                        21153,new WorldPoint(2664, 4072, 1)),
+                                new SpecificObstacleArea(2664,2664,4073,4073,1,
+                                        21153,new WorldPoint(2664, 4072, 1)),
+                                new SpecificObstacleArea(2664,2664,4072,4072,1,
+                                        21154,new WorldPoint(2664, 4071, 1)),
+                                new SpecificObstacleArea(2664,2664,4071,4071,1,
+                                        21155,new WorldPoint(2664, 4070, 1)),
+                                new SpecificObstacleArea(2664,2664,4070,4070,1,
+                                        21156,new WorldPoint(2664, 4069, 1))
                         ))
                 );
             default:

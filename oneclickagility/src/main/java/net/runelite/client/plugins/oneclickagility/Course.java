@@ -52,8 +52,12 @@ public class Course
         {
             if (obstacle.getId() == area.getNextObstacleID())
             {
+                if (area instanceof SpecificObstacleArea
+                        && !obstacle.getWorldLocation().equals(((SpecificObstacleArea) area).getObstacleLocation()))
+                {
+                    continue;
+                }
                 area.setNextObstacle(obstacle);
-                return;
             }
         }
     }
@@ -64,8 +68,12 @@ public class Course
         {
             if (obstacle.getId() == area.getNextObstacleID())
             {
+                if (area instanceof SpecificObstacleArea
+                        && !obstacle.getWorldLocation().equals(((SpecificObstacleArea) area).getObstacleLocation()))
+                {
+                    continue;
+                }
                 area.setNextObstacle(null);
-                return;
             }
         }
     }
