@@ -1,6 +1,6 @@
 version = "1.0.0"
 
-project.extra["PluginName"] = "OneClickTwoTick"
+project.extra["PluginName"] = "One Click Two Tick"
 project.extra["PluginDescription"] = "2 tick teaks and harpooning"
 project.extra["ProjectSupportUrl"] = "https://github.com/Sundar-Gandu/Pajeet-Plugins"
 
