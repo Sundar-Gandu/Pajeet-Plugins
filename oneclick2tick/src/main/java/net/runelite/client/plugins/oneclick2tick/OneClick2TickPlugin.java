@@ -88,7 +88,7 @@ public class OneClick2TickPlugin extends Plugin
    @Subscribe
    private void onMenuEntryAdded(MenuEntryAdded event)
    {
-      if(event.getTarget().equals("Fishing spot") || event.getTarget().equals("Teak"))
+      if(event.getTarget().contains("Fishing spot") || event.getTarget().contains("Teak"))
       {
          if(tick == 2)
          {
@@ -101,7 +101,7 @@ public class OneClick2TickPlugin extends Plugin
    @Subscribe
    private void onMenuOptionClicked(MenuOptionClicked event)
    {
-      if (!event.getMenuTarget().equals("Fishing spot") && !event.getMenuTarget().equals("Teak"))
+      if (!event.getMenuTarget().contains("Fishing spot") && !event.getMenuTarget().contains("Teak"))
          return;
 
       if(cooldown)
