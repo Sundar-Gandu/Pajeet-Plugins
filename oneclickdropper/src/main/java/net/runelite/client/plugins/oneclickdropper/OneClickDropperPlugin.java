@@ -182,7 +182,7 @@ public class OneClickDropperPlugin extends Plugin
          {
             int index = config.customDrop() ? dropOrder.get(i) : i;
             WidgetItem item = getItemAtIndex(index);
-            if (item != null)
+            if (item != null && ids.contains(item.getId()))
             {
                matchedItems.add(item);
             }
