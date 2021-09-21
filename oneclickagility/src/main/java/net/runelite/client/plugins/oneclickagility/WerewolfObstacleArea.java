@@ -19,7 +19,7 @@ public class WerewolfObstacleArea extends ObstacleArea
 
     WerewolfObstacleArea(Client client)
     {
-        super(3523, 3549, 9861, 9890, 0, -1);
+        super(3523, 3549, 9861, 9897, 0, -1);
         this.client = client;
     }
 
@@ -28,7 +28,17 @@ public class WerewolfObstacleArea extends ObstacleArea
     @Override
     public MenuEntry createMenuEntry()
     {
-        if (getWidgetItem(Collections.singletonList(4179)) != null && new NPCQuery().idEquals(5927).result(client).first() != null)
+        if (client.getLocalPlayer().getWorldLocation().getY() > 9875)
+        {
+            return new MenuEntry("Walk here",
+                    "",
+                    0,
+                    MenuAction.WALK.getId(),
+                    3528,
+                    9866,
+                    false);
+        }
+        else if (getWidgetItem(Collections.singletonList(4179)) != null && new NPCQuery().idEquals(5927).result(client).first() != null)
             return new MenuEntry("Give-Stick",
                     "Agility Trainer",
                     5967,
