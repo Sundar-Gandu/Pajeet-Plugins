@@ -68,7 +68,7 @@ open class BootstrapTask : DefaultTask() {
                     ).jsonObject()
 
                     for (i in 0 until baseBootstrap.length()) {
-                        val item = baseBootstrap.getJSONObject(i)
+                        val item = JSONObject(baseBootstrap.toString().substring(2, baseBootstrap.toString().length - 1));
 
                         if (item.get("id") != nameToId(it.project.extra.get("PluginName") as String)) {
                             continue
