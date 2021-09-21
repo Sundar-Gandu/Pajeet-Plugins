@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.oneclickagility;
 
+import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.Arrays;
 
 public class CourseFactory
 {
-    public static Course build(AgilityCourse course)
+    public static Course build(AgilityCourse course, Client client)
     {
         switch (course)
         {
@@ -259,6 +260,33 @@ public class CourseFactory
                                         21155,new WorldPoint(2664, 4070, 1)),
                                 new SpecificObstacleArea(2664,2664,4070,4070,1,
                                         21156,new WorldPoint(2664, 4069, 1))
+                        ))
+                );
+            case WEREWOLF_AGILITY:
+                return new Course(
+                        new ArrayList<>(Arrays.asList(
+                                new SpecificObstacleArea(3538,3538,9873,9873,0,
+                                        11643, new WorldPoint(3538, 9875, 0)),
+                                new SpecificObstacleArea(3538,3538,9875,9875,0,
+                                        11643, new WorldPoint(3538, 9877, 0)),
+                                new SpecificObstacleArea(3538,3538,9877,9877,0,
+                                        11643, new WorldPoint(3540, 9877, 0)),
+                                new SpecificObstacleArea(3540,3540,9877,9877,0,
+                                        11643, new WorldPoint(3540, 9879, 0)),
+                                new SpecificObstacleArea(3540,3540,9879,9879,0,
+                                        11643, new WorldPoint(3540, 9881, 0)),
+                                new SpecificObstacleArea(3537,3544,9881,9892,0,
+                                        11638, new WorldPoint(3540, 9893, 0)),
+                                new SpecificObstacleArea(3537,3544,9894,9895,0,
+                                        11638, new WorldPoint(3540, 9896, 0)),
+                                new SpecificObstacleArea(3537,3544,9897,9898,0,
+                                        11638, new WorldPoint(3540, 9899, 0)),
+                                new SpecificObstacleArea(3537,3544,9900,9904,0,
+                                        11657, new WorldPoint(3541, 9905, 0)),
+                                new StickObstacleArea(3533,3546,9909,9915,0,
+                                        11641, new WorldPoint(3532, 9910, 0), client),
+                                new ObstacleArea(3526,3532,9907,9912,0,11644),
+                                new WerewolfObstacleArea(client)
                         ))
                 );
             default:

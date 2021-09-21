@@ -12,6 +12,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.DecorativeObjectDespawned;
@@ -35,9 +36,11 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.util.GameEventManager;
+import net.runelite.rs.api.RSClient;
 import org.pf4j.Extension;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -52,6 +55,7 @@ import java.util.Set;
 )
 
 @Slf4j
+@Singleton
 public class OneClickAgilityPlugin extends Plugin
 {
 
@@ -92,7 +96,7 @@ public class OneClickAgilityPlugin extends Plugin
     @Override
     protected void startUp()
     {
-        course = CourseFactory.build(config.courseSelection());
+        course = CourseFactory.build(config.courseSelection(),client);
     }
 
     @Override
@@ -106,7 +110,7 @@ public class OneClickAgilityPlugin extends Plugin
     {
         if(event.getGroup().equals("oneclickagility"))
         {
-            course = CourseFactory.build(config.courseSelection());
+            course = CourseFactory.build(config.courseSelection(),client);
             gameEventManager.simulateGameEvents(this);
         }
     }
@@ -379,6 +383,14 @@ public class OneClickAgilityPlugin extends Plugin
         }
 
         event.setMenuEntry(obstacleArea.createMenuEntry());
+
+        if (event.getMenuOption().equals("Walk here"))
+        {
+            event.consume();
+            LocalPoint point = LocalPoint.fromWorld(client, new WorldPoint(event.getParam0(),event.getParam1(),client.getPlane()));
+            walkTile(point.getSceneX(), point.getSceneY());
+
+        }
     }
 
     private boolean checkTileForMark(Tile tile)
@@ -413,6 +425,15 @@ public class OneClickAgilityPlugin extends Plugin
             }
         }
         return null;
+    }
+
+    private void walkTile(int x, int y)
+    {
+        RSClient rsClient = (RSClient) client;
+        rsClient.setSelectedSceneTileX(x);
+        rsClient.setSelectedSceneTileY(y);
+        rsClient.setViewportWalking(true);
+        rsClient.setCheckClick(false);
     }
 
     private MenuEntry createSeersTeleportMenuEntry()
