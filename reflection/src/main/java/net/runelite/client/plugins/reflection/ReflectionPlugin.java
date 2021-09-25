@@ -101,7 +101,7 @@ public class ReflectionPlugin extends Plugin
             Graphics2D graphics = img.createGraphics();
             graphics.drawImage(image, 0, 0, null);
             graphics.setColor(color);
-            graphics.setComposite(AlphaComposite.getInstance(10, 0.75F));
+            graphics.setComposite(AlphaComposite.getInstance(10, 1));
             graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
             graphics.dispose();
             return new ImageIcon(img);

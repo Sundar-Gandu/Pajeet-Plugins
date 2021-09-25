@@ -32,6 +32,7 @@ include(":oneclick3tfish")
 include(":oneclickagility")
 include(":oneclickdropper")
 include(":oneclickthieving")
+include(":reflection")
 include(":soundfilter")
 include(":tradewindow")
 
