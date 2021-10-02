@@ -141,7 +141,7 @@ public class OneClickAgilityPlugin extends Plugin
                     + event.getParam0() + ", "
                     + event.getParam1());
         } 
-        else if(event.getMenuOption().equals("One Click Agility")) {
+        else if(event.getMenuOption().equals("Crossing Obstacle")) {
             event.consume();
         }
     }
@@ -156,7 +156,7 @@ public class OneClickAgilityPlugin extends Plugin
         {
             if (config.consumeMisclicks()) 
             {
-                text = "One Click Agility";
+                text = "Crossing Obstacle";
             } 
             else 
             {
