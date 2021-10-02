@@ -114,12 +114,24 @@ public class OneClickAgilityPlugin extends Plugin
             gameEventManager.simulateGameEvents(this);
         }
     }
-
-
+    
     @Subscribe
-    public void onMenuOptionClicked(MenuOptionClicked event)
+    public void onMenuOptionClicked(MenuOptionClicked event) 
     {
-        if(event.getMenuOption().equals("<col=00ff00>One Click Agility"))
+        if (config.showGreenText())
+        {
+            if(event.getMenuOption().equals("<col=00ff00>One Click Agility")) 
+            {
+                handleClick(event);
+                log.info(event.getMenuOption()+ ", "
+                        + event.getMenuTarget() + ", "
+                        + event.getId() + ", "
+                        + event.getMenuAction().name() + ", "
+                        + event.getParam0() + ", "
+                        + event.getParam1());
+            }
+        } 
+        else if(event.getMenuOption().equals("")) 
         {
             handleClick(event);
             log.info(event.getMenuOption()+ ", "
@@ -128,9 +140,8 @@ public class OneClickAgilityPlugin extends Plugin
                     + event.getMenuAction().name() + ", "
                     + event.getParam0() + ", "
                     + event.getParam1());
-        }
-        else if(event.getMenuOption().equals("One Click Agility"))
-        {
+        } 
+        else if(event.getMenuOption().equals("One Click Agility")) {
             event.consume();
         }
     }
@@ -141,20 +152,24 @@ public class OneClickAgilityPlugin extends Plugin
         if(client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN) return;
         String text;
 
-        if(course.getCurrentObstacleArea(client.getLocalPlayer()) == null)
+        if(course.getCurrentObstacleArea(client.getLocalPlayer()) == null) 
         {
-            if (config.consumeMisclicks())
+            if (config.consumeMisclicks()) 
             {
                 text = "One Click Agility";
-            }
-            else
+            } 
+            else 
             {
                 return;
             }
-        }
-        else
+        } 
+        else if (config.showGreenText())
         {
             text =  "<col=00ff00>One Click Agility";
+        } 
+        else 
+        {
+            text = "";
         }
 
         client.insertMenuItem(
