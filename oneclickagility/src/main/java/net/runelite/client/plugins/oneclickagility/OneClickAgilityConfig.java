@@ -82,4 +82,15 @@ public interface OneClickAgilityConfig extends Config
     {
         return true;
     }
+    
+    @ConfigItem(
+            position = 6,
+            keyName = "showGreenText",
+            name = "Show Green Text",
+            description = "Displays green text as a reminder that the plugin is on"
+    )
+    default boolean showGreenText()
+    {
+        return true;
+    }
 }
