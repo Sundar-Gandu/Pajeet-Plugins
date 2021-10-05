@@ -86,7 +86,7 @@ public class OneClickThievingPlugin extends Plugin
    }
 
    Set<String> foodMenuOption = Set.of("Drink","Eat");
-   Set<Integer> prayerPotionIDs = Set.of(139,141,143,2434,3024,3026,3028,3030);
+   Set<Integer> prayerPotionIDs = Set.of(139,141,143,2434,3024,3026,3028,3030,189,191,193,2450);
    Set<Integer> foodBlacklist = Set.of(139,141,143,2434,3024,3026,3028,3030,24774);
    Set<Integer> coinPouches = Set.of(22521,22522,22523,22524,22525,22526,22527,22528,22529,22530,22531,22532,22533,22534,22535,22536,22537,22538,24703);
    private boolean shouldHeal = false;
