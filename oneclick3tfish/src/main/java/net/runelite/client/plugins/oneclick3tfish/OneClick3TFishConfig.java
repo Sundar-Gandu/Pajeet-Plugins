@@ -28,4 +28,15 @@ public interface OneClick3TFishConfig extends Config
     {
         return false;
     }
+
+    @ConfigItem(
+            position = 2,
+            keyName = "dropFish",
+            name = "Drop Fish",
+            description = "Drop fish if you click right after tick manipulating"
+    )
+    default boolean dropFish()
+    {
+        return true;
+    }
 }

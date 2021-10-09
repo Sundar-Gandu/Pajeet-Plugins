@@ -126,13 +126,13 @@ public class OneClick3TFishPlugin extends Plugin
             cooldown = true;
             return;
          case 2:
-            //drop
+            //wait
             cooldown = true;
             event.consume();
             return;
          case 3:
             //tick manip
-            if(drop)
+            if(drop && config.dropFish())
             {
                WidgetItem dropItem= getWidgetItem(fishID);
                if (dropItem != null)
