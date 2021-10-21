@@ -135,7 +135,7 @@ public class OneClickAgilityPlugin extends Plugin
         }
     }
 
-    @Subscribe
+    @Subscribe (priority = 1)
     private void onClientTick(ClientTick event)
     {
         if(client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN) return;
