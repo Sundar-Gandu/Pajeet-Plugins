@@ -9,11 +9,14 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.util.Text;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -30,10 +33,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.pf4j.Extension;
 import javax.inject.Inject;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 @Extension
 @PluginDescriptor(
@@ -135,8 +141,44 @@ public class OneClickThievingPlugin extends Plugin
       }
    }
 
+   private List<String> getActions(NPC npc) {
+      return Arrays.stream(npc.getComposition().getActions()).filter(Objects::nonNull).map(Text::removeTags).collect(Collectors.toList());
+   }
+
    private void method2(MenuOptionClicked event)
    {
+      if(config.clickOverride()) {
+         NPC npc =  new NPCQuery().idEquals(config.npcID()).result(client).nearestTo(client.getLocalPlayer());
+         if (npc != null) {
+            event.setMenuEntry(new MenuEntry("Pickpocket","<col=ffff00>"+npc.getName()+"<col=ff00>  (level-"+npc.getCombatLevel()+")",npc.getIndex(),MenuAction.NPC_THIRD_OPTION.getId(),0,0,false));
+
+            switch (getActions(npc).indexOf("Pickpocket")) {
+               case 0:
+                  event.setMenuAction(MenuAction.NPC_FIRST_OPTION);
+                  break;
+               case 1:
+                  event.setMenuAction(MenuAction.NPC_SECOND_OPTION);
+                  break;
+               case 2:
+                  event.setMenuAction(MenuAction.NPC_THIRD_OPTION);
+                  break;
+               case 3:
+                  event.setMenuAction(MenuAction.NPC_FOURTH_OPTION);
+                  break;
+               case 4:
+                  event.setMenuAction(MenuAction.NPC_FIFTH_OPTION);
+                  break;
+               default:
+                  client.addChatMessage(ChatMessageType.GAMEMESSAGE, "oneClickThieving", "Did not find pickpocket option on npc, check configs", null);
+                  event.consume();
+                  return;
+            }
+         }else{
+            client.addChatMessage(ChatMessageType.GAMEMESSAGE, "oneClickThieving", "Npc not found please change the id", null);
+            event.consume();
+            return;
+         }
+      }
       if (config.disableWalk() && event.getMenuOption().equals("Walk here"))
       {
          event.consume();

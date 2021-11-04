@@ -10,6 +10,28 @@ import static net.runelite.client.plugins.oneclickthieving.PrayMethod.LAZY_PRAY;
 public interface OneClickThievingConfig extends Config
 {
     @ConfigItem(
+            keyName = "clickOverride",
+            name = "Clicks Override",
+            description = "Makes all of your clicks pickpocket chosen NPC",
+            position = -2
+    )
+    default boolean clickOverride()
+    {
+        return false;
+    }
+    @ConfigItem(
+            keyName = "npcID",
+            name = "NPC ID",
+            description = "the id of the npc you want to pickpocket",
+            position = -1,
+            hidden = true,
+            unhide = "clickOverride"
+    )
+    default int npcID()
+    {
+        return 0;
+    }
+    @ConfigItem(
             keyName = "enableCoinPouch",
             name = "Open Coin Pouch",
             description = "Opens the coinpouch when it reaches the maximum of 28",
