@@ -11,6 +11,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
@@ -35,10 +36,10 @@ import org.pf4j.Extension;
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Extension
@@ -98,6 +99,8 @@ public class OneClickThievingPlugin extends Plugin
    private boolean shouldHeal = false;
    private int prayerTimeOut = 0;
 
+   private static final int DODGY_NECKLACE_ID = 21143;
+
    @Subscribe
    public void onChatMessage(ChatMessage event)
    {
@@ -120,7 +123,52 @@ public class OneClickThievingPlugin extends Plugin
    @Subscribe
    public void onMenuOptionClicked(MenuOptionClicked event)
    {
-      method2(event);
+      //change click to pickpocket
+      if(config.clickOverride())
+      {
+         NPC npc =  new NPCQuery().idEquals(config.npcID()).result(client).nearestTo(client.getLocalPlayer());
+         if (npc != null)
+         {
+            event.setMenuEntry(new MenuEntry(
+                    "Pickpocket",
+                     npc.getName(),
+                     npc.getIndex(),
+                     MenuAction.NPC_THIRD_OPTION.getId(),
+                     0,
+                     0,
+                     false));
+
+            switch (getActions(npc).indexOf("Pickpocket")) {
+               case 0:
+                  event.setMenuAction(MenuAction.NPC_FIRST_OPTION);
+                  break;
+               case 1:
+                  event.setMenuAction(MenuAction.NPC_SECOND_OPTION);
+                  break;
+               case 2:
+                  event.setMenuAction(MenuAction.NPC_THIRD_OPTION);
+                  break;
+               case 3:
+                  event.setMenuAction(MenuAction.NPC_FOURTH_OPTION);
+                  break;
+               case 4:
+                  event.setMenuAction(MenuAction.NPC_FIFTH_OPTION);
+                  break;
+               default:
+                  sendGameMessage("Did not find pickpocket option on npc, check configs");
+                  event.consume();
+                  return;
+            }
+         }
+         else
+         {
+            sendGameMessage("Npc not found please change the id");
+            event.consume();
+            return;
+         }
+      }
+
+      changeMenuAction(event);
    }
 
    @Subscribe
@@ -145,66 +193,42 @@ public class OneClickThievingPlugin extends Plugin
       return Arrays.stream(npc.getComposition().getActions()).filter(Objects::nonNull).map(Text::removeTags).collect(Collectors.toList());
    }
 
-   private void method2(MenuOptionClicked event)
+   private void changeMenuAction(MenuOptionClicked event)
    {
-      if(config.clickOverride()) {
-         NPC npc =  new NPCQuery().idEquals(config.npcID()).result(client).nearestTo(client.getLocalPlayer());
-         if (npc != null) {
-            event.setMenuEntry(new MenuEntry("Pickpocket","<col=ffff00>"+npc.getName()+"<col=ff00>  (level-"+npc.getCombatLevel()+")",npc.getIndex(),MenuAction.NPC_THIRD_OPTION.getId(),0,0,false));
-
-            switch (getActions(npc).indexOf("Pickpocket")) {
-               case 0:
-                  event.setMenuAction(MenuAction.NPC_FIRST_OPTION);
-                  break;
-               case 1:
-                  event.setMenuAction(MenuAction.NPC_SECOND_OPTION);
-                  break;
-               case 2:
-                  event.setMenuAction(MenuAction.NPC_THIRD_OPTION);
-                  break;
-               case 3:
-                  event.setMenuAction(MenuAction.NPC_FOURTH_OPTION);
-                  break;
-               case 4:
-                  event.setMenuAction(MenuAction.NPC_FIFTH_OPTION);
-                  break;
-               default:
-                  client.addChatMessage(ChatMessageType.GAMEMESSAGE, "oneClickThieving", "Did not find pickpocket option on npc, check configs", null);
-                  event.consume();
-                  return;
-            }
-         }else{
-            client.addChatMessage(ChatMessageType.GAMEMESSAGE, "oneClickThieving", "Npc not found please change the id", null);
-            event.consume();
-            return;
-         }
-      }
       if (config.disableWalk() && event.getMenuOption().equals("Walk here"))
       {
          event.consume();
          return;
       }
-
       if (!event.getMenuOption().equals("Pickpocket"))
       {
-         return;
-      }
-
-      //dodgy necklace
-      if(config.enableNecklace() && getWidgetItem(21143) != null && !isItemEquipped(List.of(21143)))
-      {
-         event.setMenuEntry(new MenuEntry("Wear", "Wear", 21143, MenuAction.ITEM_SECOND_OPTION.getId(), getWidgetItem(21143).getIndex(), 9764864, false));
          return;
       }
 
       WidgetItem coinpouch = getWidgetItem(coinPouches);
       if (config.enableCoinPouch() && coinpouch != null && coinpouch.getQuantity() == 28)
       {
-         event.setMenuEntry(new MenuEntry("Open-all", "Open-all", coinpouch.getId(), MenuAction.ITEM_FIRST_OPTION.getId(), coinpouch.getIndex(), 9764864, false));
-         return;
+         event.setMenuEntry(new MenuEntry(
+                 "Open-all",
+                 "Coin Pouch",
+                 coinpouch.getId(),
+                 MenuAction.ITEM_FIRST_OPTION.getId(),
+                 coinpouch.getIndex(),
+                 WidgetInfo.INVENTORY.getId(),
+                 false));
       }
-
-      if(config.enableHeal() && shouldHeal)
+      //dodgy necklace
+      else if(config.enableNecklace() && getWidgetItem(DODGY_NECKLACE_ID) != null && !isItemEquipped(List.of(DODGY_NECKLACE_ID)))
+      {
+         event.setMenuEntry(new MenuEntry(
+                 "Wear",
+                 "Necklace",
+                 DODGY_NECKLACE_ID,
+                 MenuAction.ITEM_SECOND_OPTION.getId(),
+                 getWidgetItem(DODGY_NECKLACE_ID).getIndex(),
+                 WidgetInfo.INVENTORY.getId(), false));
+      }
+      else if(config.enableHeal() && shouldHeal)
       {
          WidgetItem food = getItemMenu(foodMenuOption,foodBlacklist);
          if (config.haltOnLowFood() && food == null)
@@ -212,18 +236,21 @@ public class OneClickThievingPlugin extends Plugin
             event.consume();
             notifier.notify("You are out of food");
             sendGameMessage("You are out of food");
-            return;
          }
          else if (food != null)
          {
             String[] foodMenuOptions = itemManager.getItemComposition(food.getId()).getInventoryActions();
-            log.info(foodMenuOptions[0]);
-            event.setMenuEntry(new MenuEntry(foodMenuOptions[0], foodMenuOptions[0], food.getId(), MenuAction.ITEM_FIRST_OPTION.getId(), food.getIndex(), 9764864, false));
-            return;
+            event.setMenuEntry(new MenuEntry(
+                    foodMenuOptions[0],
+                    foodMenuOptions[0],
+                    food.getId(),
+                    MenuAction.ITEM_FIRST_OPTION.getId(),
+                    food.getIndex(),
+                    WidgetInfo.INVENTORY.getId(),
+                    false));
          }
       }
-
-      if(config.enableSpell())
+      else if(config.enableSpell())
       {
          //check spellbook
          if(client.getVarbitValue(4070) != 3)
@@ -231,40 +258,51 @@ public class OneClickThievingPlugin extends Plugin
             event.consume();
             notifier.notify("You are on the wrong spellbook");
             sendGameMessage("You are on the wrong spellbook");
-            return;
          }
-
-         if(client.getVarbitValue(12414) == 0)
+         //check Shadowveil cooldown
+         else if(client.getVarbitValue(12414) == 0)
          {
-            event.setMenuEntry(new MenuEntry("Cast", "<col=00ff00>Shadow Veil</col>", 1, MenuAction.CC_OP.getId(), -1, 14287024, false));
-            return;
+            event.setMenuEntry(new MenuEntry(
+                    "Cast",
+                    "Shadow Veil",
+                    1,
+                    MenuAction.CC_OP.getId(),
+                    -1,
+                    WidgetInfo.SPELL_SHADOW_VEIL.getId(),
+                    false));
          }
       }
-
-      if(config.enablePray())
+      else if(config.enablePray())
       {
          if (client.getBoostedSkillLevel(Skill.PRAYER) == 0 && prayerTimeOut == 0)
          {
             WidgetItem prayerPotion = getWidgetItem(prayerPotionIDs);
             if (prayerPotion != null)
             {
-               event.setMenuEntry(new MenuEntry("Drink", "Drink", prayerPotion.getId(), MenuAction.ITEM_FIRST_OPTION.getId(), prayerPotion.getIndex(), 9764864, false));
-               return;
+               event.setMenuEntry(new MenuEntry(
+                       "Drink",
+                       "Prayer",
+                       prayerPotion.getId(),
+                       MenuAction.ITEM_FIRST_OPTION.getId(),
+                       prayerPotion.getIndex(),
+                       WidgetInfo.INVENTORY.getId(),
+                       false));
             }
          }
-
          //if redemption is off
-         if(client.getVarbitValue(4120) == 0 && client.getBoostedSkillLevel(Skill.PRAYER) > 0 )
+         else if(client.getVarbitValue(Varbits.PRAYER_REDEMPTION.getId()) == 0 && client.getBoostedSkillLevel(Skill.PRAYER) > 0 )
          {
-            if(config.prayMethod() == PrayMethod.LAZY_PRAY)
+            if ((config.prayMethod() == PrayMethod.REACTIVE_PRAY && shouldPray())
+                    || config.prayMethod() == PrayMethod.LAZY_PRAY)
             {
-               event.setMenuEntry(new MenuEntry("Activate", "<col=ff9040>Redemption</col>", 1, MenuAction.CC_OP.getId(), -1, 35454997, false));
-               return;
-            }
-            else if(config.prayMethod() == PrayMethod.REACTIVE_PRAY && shouldPray())
-            {
-               event.setMenuEntry(new MenuEntry("Activate", "<col=ff9040>Redemption</col>", 1, MenuAction.CC_OP.getId(), -1, 35454997, false));
-               return;
+               event.setMenuEntry(new MenuEntry(
+                       "Activate",
+                       "Redemption",
+                       1,
+                       MenuAction.CC_OP.getId(),
+                       -1,
+                       WidgetInfo.PRAYER_REDEMPTION.getId(),
+                       false));
             }
          }
       }
@@ -290,11 +328,6 @@ public class OneClickThievingPlugin extends Plugin
       return false;
    }
 
-   private int getRandomIntBetweenRange(int min, int max) {
-      //return (int) ((Math.random() * ((max - min) + 1)) + min); //This does not allow return of negative values
-      return ThreadLocalRandom.current().nextInt(min, max + 1);
-   }
-
    public WidgetItem getWidgetItem(Collection<Integer> ids) {
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
       if (inventoryWidget != null) {
@@ -309,19 +342,10 @@ public class OneClickThievingPlugin extends Plugin
    }
 
    private WidgetItem getWidgetItem(int id) {
-      Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      if (inventoryWidget != null) {
-         Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
-         for (WidgetItem item : items) {
-            if (item.getId() == id) {
-               return item;
-            }
-         }
-      }
-      return null;
+      return getWidgetItem(Collections.singletonList(id));
    }
 
-   public WidgetItem getItemMenu(Collection<String>menuOptions, Collection<Integer> ignoreIDs) {
+   private WidgetItem getItemMenu(Collection<String>menuOptions, Collection<Integer> ignoreIDs) {
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
       if (inventoryWidget != null) {
          Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
@@ -340,23 +364,7 @@ public class OneClickThievingPlugin extends Plugin
       return null;
    }
 
-   private WidgetItem getItemMenu(Collection<String> menuOptions) {
-      Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      if (inventoryWidget != null) {
-         Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
-         for (WidgetItem item : items) {
-            String[] menuActions = itemManager.getItemComposition(item.getId()).getInventoryActions();
-            for (String action : menuActions) {
-               if (action != null && menuOptions.contains(action)) {
-                  return item;
-               }
-            }
-         }
-      }
-      return null;
-   }
-
-   public void sendGameMessage(String message) {
+   private void sendGameMessage(String message) {
       String chatMessage = new ChatMessageBuilder()
               .append(ChatColorType.HIGHLIGHT)
               .append(message)
