@@ -3,6 +3,7 @@ package net.runelite.client.plugins.oneclickagility;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
@@ -28,6 +29,7 @@ public class WerewolfObstacleArea extends ObstacleArea
     @Override
     public MenuEntry createMenuEntry()
     {
+        NPC werewolf = new NPCQuery().idEquals(5927).result(client).first();
         if (client.getLocalPlayer().getWorldLocation().getY() > 9875)
         {
             return new MenuEntry("Walk here",
@@ -38,10 +40,10 @@ public class WerewolfObstacleArea extends ObstacleArea
                     9866,
                     false);
         }
-        else if (getWidgetItem(Collections.singletonList(4179)) != null && new NPCQuery().idEquals(5927).result(client).first() != null)
+        else if (getWidgetItem(Collections.singletonList(4179)) != null && werewolf != null)
             return new MenuEntry("Give-Stick",
                     "Agility Trainer",
-                    5967,
+                    werewolf.getIndex(),
                     MenuAction.NPC_FIRST_OPTION.getId(),
                     0,
                     0,
