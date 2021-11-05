@@ -206,6 +206,33 @@ public class OneClickThievingPlugin extends Plugin
       }
 
       WidgetItem coinpouch = getWidgetItem(coinPouches);
+
+      if(config.enableHeal() && shouldHeal)
+      {
+         WidgetItem food = getItemMenu(foodMenuOption,foodBlacklist);
+         if (config.haltOnLowFood() && food == null)
+         {
+            event.consume();
+            notifier.notify("You are out of food");
+            sendGameMessage("You are out of food");
+            return;
+         }
+         else if (food != null)
+         {
+            String[] foodMenuOptions = itemManager.getItemComposition(food.getId()).getInventoryActions();
+            event.setMenuEntry(new MenuEntry(
+                    foodMenuOptions[0],
+                    foodMenuOptions[0],
+                    food.getId(),
+                    MenuAction.ITEM_FIRST_OPTION.getId(),
+                    food.getIndex(),
+                    WidgetInfo.INVENTORY.getId(),
+                    false));
+            return;
+         }
+         //else fallthrough
+      }
+
       if (config.enableCoinPouch() && coinpouch != null && coinpouch.getQuantity() == 28)
       {
          event.setMenuEntry(new MenuEntry(
@@ -227,28 +254,6 @@ public class OneClickThievingPlugin extends Plugin
                  MenuAction.ITEM_SECOND_OPTION.getId(),
                  getWidgetItem(DODGY_NECKLACE_ID).getIndex(),
                  WidgetInfo.INVENTORY.getId(), false));
-      }
-      else if(config.enableHeal() && shouldHeal)
-      {
-         WidgetItem food = getItemMenu(foodMenuOption,foodBlacklist);
-         if (config.haltOnLowFood() && food == null)
-         {
-            event.consume();
-            notifier.notify("You are out of food");
-            sendGameMessage("You are out of food");
-         }
-         else if (food != null)
-         {
-            String[] foodMenuOptions = itemManager.getItemComposition(food.getId()).getInventoryActions();
-            event.setMenuEntry(new MenuEntry(
-                    foodMenuOptions[0],
-                    foodMenuOptions[0],
-                    food.getId(),
-                    MenuAction.ITEM_FIRST_OPTION.getId(),
-                    food.getIndex(),
-                    WidgetInfo.INVENTORY.getId(),
-                    false));
-         }
       }
       //varbit is shadowveil cooldown
       else if(config.enableSpell() && client.getVarbitValue(12414) == 0)
