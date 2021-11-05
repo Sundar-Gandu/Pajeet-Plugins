@@ -89,8 +89,8 @@ public interface OneClickThievingConfig extends Config
 
     @ConfigItem(
             keyName = "haltOnNoFood",
-            name = "Stop on No food",
-            description = "This will notify you and prevent you from picpocketing when you run out of food",
+            name = "Stop on No Food/Prayer",
+            description = "This will notify you and prevent you from picpocketing when you run out of food or prayer potions",
             position = 4,
             hidden = true,
             unhide = "enableHeal"

@@ -250,7 +250,8 @@ public class OneClickThievingPlugin extends Plugin
                     false));
          }
       }
-      else if(config.enableSpell())
+      //varbit is shadowveil cooldown
+      else if(config.enableSpell() && client.getVarbitValue(12414) == 0)
       {
          //check spellbook
          if(client.getVarbitValue(4070) != 3)
@@ -259,8 +260,7 @@ public class OneClickThievingPlugin extends Plugin
             notifier.notify("You are on the wrong spellbook");
             sendGameMessage("You are on the wrong spellbook");
          }
-         //check Shadowveil cooldown
-         else if(client.getVarbitValue(12414) == 0)
+         else
          {
             event.setMenuEntry(new MenuEntry(
                     "Cast",
@@ -287,6 +287,12 @@ public class OneClickThievingPlugin extends Plugin
                        prayerPotion.getIndex(),
                        WidgetInfo.INVENTORY.getId(),
                        false));
+            }
+            else if (config.haltOnLowFood())
+            {
+               event.consume();
+               notifier.notify("You are out of prayer potions");
+               sendGameMessage("You are out of prayer potions");
             }
          }
          //if redemption is off
