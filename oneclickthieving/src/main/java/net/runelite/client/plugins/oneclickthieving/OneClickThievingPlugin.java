@@ -190,7 +190,7 @@ public class OneClickThievingPlugin extends Plugin
    }
 
    private List<String> getActions(NPC npc) {
-      return Arrays.stream(npc.getComposition().getActions()).filter(Objects::nonNull).map(Text::removeTags).collect(Collectors.toList());
+      return Arrays.stream(npc.getComposition().getActions()).map(o -> o == null ? null : Text.removeTags(o)).collect(Collectors.toList());
    }
 
    private void changeMenuAction(MenuOptionClicked event)
