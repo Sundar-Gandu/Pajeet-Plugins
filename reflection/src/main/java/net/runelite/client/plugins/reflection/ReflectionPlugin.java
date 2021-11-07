@@ -151,55 +151,23 @@ public class ReflectionPlugin extends Plugin
     {
         if (event.getGroup().equalsIgnoreCase("reflection"))
         {
-            String var2 = event.getKey();
-            byte var3 = -1;
-            switch (var2.hashCode())
+            switch (event.getKey())
             {
-                case -184162995:
-                    if (var2.equals("clientTitle"))
-                    {
-                        var3 = 0;
-                    }
-                    break;
-                case -148243586:
-                    if (var2.equals("pluginTitleColor"))
-                    {
-                        var3 = 2;
-                    }
-                    break;
-                case 28836063:
-                    if (var2.equals("pluginStarOnColor"))
-                    {
-                        var3 = 3;
-                    }
-                    break;
-                case 1774658288:
-                    if (var2.equals("pluginSwitcherOnColor"))
-                    {
-                        var3 = 4;
-                    }
-                    break;
-                case 1849470288:
-                    if (var2.equals("discordAppId"))
-                    {
-                        var3 = 1;
-                    }
-            }
-
-            switch (var3)
-            {
-                case 0:
+                case "clientTitle":
                     updateClientTitle(false);
                     break;
-                case 1:
+                case "discordAppId":
                     updateDiscordAppID(false);
                     break;
-                case 2:
-                case 3:
-                case 4:
+                case "changeIcon":
+                    updateIcon(config.changeIcon());
+                    break;
+                case "pluginTitleColor":
+                case "pluginStarOnColor":
+                case "pluginSwitcherOnColor":
                     updatePluginListResourceImages(false);
+                    break;
             }
-
         }
     }
 
@@ -233,7 +201,9 @@ public class ReflectionPlugin extends Plugin
 
             try
             {
+                Object state = FieldUtils.readDeclaredField(plugin, "discordState", true);
                 discordService.close();
+                FieldUtils.writeDeclaredField(state, "runeliteTitle", "Runelite", true);
                 FieldUtils.writeDeclaredField(discordService, "discordAppId", appId, true);
                 discordService.init();
                 if (pluginManager.isPluginEnabled(plugin))
@@ -241,9 +211,9 @@ public class ReflectionPlugin extends Plugin
                     pluginManager.stopPlugin(plugin);
                     pluginManager.startPlugin(plugin);
                 }
-            } catch (Exception var6)
+            } catch (Exception e)
             {
-                log.debug("error: {}", var6.getMessage());
+                log.debug("error: {}", e.getMessage());
             }
 
         }
