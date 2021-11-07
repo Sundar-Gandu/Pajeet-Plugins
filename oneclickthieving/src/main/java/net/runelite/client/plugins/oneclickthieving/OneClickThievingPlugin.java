@@ -4,6 +4,7 @@ import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -13,6 +14,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.StatChanged;
@@ -121,10 +123,25 @@ public class OneClickThievingPlugin extends Plugin
    }
 
    @Subscribe
+   private void onClientTick(ClientTick event)
+   {
+      if(!config.clickOverride() || client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN)
+         return;
+      client.insertMenuItem(
+              "One Click Pickpocket",
+              "",
+              MenuAction.UNKNOWN.getId(),
+              0,
+              0,
+              0,
+              true);
+   }
+
+   @Subscribe
    public void onMenuOptionClicked(MenuOptionClicked event)
    {
       //change click to pickpocket
-      if(config.clickOverride())
+      if(config.clickOverride() && event.getMenuOption().equals("One Click Pickpocket"))
       {
          NPC npc =  new NPCQuery().idEquals(config.npcID()).result(client).nearestTo(client.getLocalPlayer());
          if (npc != null)
