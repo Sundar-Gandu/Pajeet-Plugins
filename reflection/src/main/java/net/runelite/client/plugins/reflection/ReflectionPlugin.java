@@ -203,7 +203,7 @@ public class ReflectionPlugin extends Plugin
             {
                 Object state = FieldUtils.readDeclaredField(plugin, "discordState", true);
                 discordService.close();
-                FieldUtils.writeDeclaredField(state, "runeliteTitle", "Runelite", true);
+                FieldUtils.writeDeclaredField(state, "runeliteTitle", "RuneLite", true);
                 FieldUtils.writeDeclaredField(discordService, "discordAppId", appId, true);
                 discordService.init();
                 if (pluginManager.isPluginEnabled(plugin))
