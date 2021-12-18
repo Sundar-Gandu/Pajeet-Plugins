@@ -11,12 +11,10 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 
-import javax.inject.Inject;
 
 @Slf4j
 public class ObstacleArea
 {
-    private Client client;
     private final int minX;
     private final int maxX;
     private final int minY;
@@ -56,8 +54,9 @@ public class ObstacleArea
     {
         if (nextObstacle != null)
         {
-            return client.createMenuEntry("test",
-                    "test",
+            return client.createMenuEntry(
+                    "Interact",
+                    "Obstacle",
                     nextObstacle.getId(),
                     MenuAction.GAME_OBJECT_FIRST_OPTION.getId(),
                     getObjectParam(nextObstacle),

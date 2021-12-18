@@ -1,6 +1,5 @@
 package net.runelite.client.plugins.oneclickagility;
 
-import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.Arrays;
 
 public class CourseFactory
 {
-    public static Course build(AgilityCourse course, Client client)
+    public static Course build(AgilityCourse course)
     {
         switch (course)
         {

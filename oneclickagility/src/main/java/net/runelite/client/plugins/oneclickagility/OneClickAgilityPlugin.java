@@ -96,7 +96,7 @@ public class OneClickAgilityPlugin extends Plugin
     @Override
     protected void startUp()
     {
-        course = CourseFactory.build(config.courseSelection(),client);
+        course = CourseFactory.build(config.courseSelection());
     }
 
     @Override
@@ -110,7 +110,7 @@ public class OneClickAgilityPlugin extends Plugin
     {
         if(event.getGroup().equals("oneclickagility"))
         {
-            course = CourseFactory.build(config.courseSelection(),client);
+            course = CourseFactory.build(config.courseSelection());
             gameEventManager.simulateGameEvents(this);
         }
     }
@@ -222,22 +222,20 @@ public class OneClickAgilityPlugin extends Plugin
 
 
     @Subscribe
-    public void DecorativeObjectSpawned(DecorativeObjectSpawned event)
+    public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
     {
-        if(event.getDecorativeObject().getId() == 10851)
+        if(event.getDecorativeObject().getId() == 10851
+                && (pyramidTopObstacle == null || pyramidTopObstacle.getY() > event.getDecorativeObject().getY()))
         {
-            if(pyramidTopObstacle == null || pyramidTopObstacle.getY() > event.getDecorativeObject().getY())
-            {
-                pyramidTopObstacle = event.getDecorativeObject();
-                return;
-            }
+            pyramidTopObstacle = event.getDecorativeObject();
+            return;
         }
 
         addToCourse(event.getDecorativeObject());
     }
 
     @Subscribe
-    public void DecorativeObjectDespawned(DecorativeObjectDespawned event)
+    public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
     {
         if(event.getDecorativeObject().getId() == 10851 && event.getDecorativeObject() == pyramidTopObstacle)
         {
@@ -270,7 +268,7 @@ public class OneClickAgilityPlugin extends Plugin
     }
 
     @Subscribe
-    public void ItemDespawned(ItemDespawned event)
+    public void onItemDespawned(ItemDespawned event)
     {
         if (event.getItem().getId() == MARK_ID)
         {
@@ -310,23 +308,21 @@ public class OneClickAgilityPlugin extends Plugin
             }
         }
 
-        if(config.seersTele() && config.courseSelection() == AgilityCourse.SEERS_VILLAGE)
-        {   //spellbook varbit, worldpoint of dropdown tile, teleportation animation ID
-            if(client.getVarbitValue(4070) == 0 && client.getLocalPlayer().getWorldLocation().equals(SEERS_END) && client.getLocalPlayer().getAnimation() != 714)
-            {
-                event.setMenuEntry(createSeersTeleportMenuEntry());
-                return;
-            }
+        if(config.seersTele()
+                && config.courseSelection() == AgilityCourse.SEERS_VILLAGE
+                && client.getVarbitValue(4070) == 0 //spellbook varbit
+                && client.getLocalPlayer().getWorldLocation().equals(SEERS_END) //worldpoint of dropdown tile
+                && client.getLocalPlayer().getAnimation() != 714) //teleportation animation ID
+        {
+            event.setMenuEntry(createSeersTeleportMenuEntry());
+            return;
         }
 
-        if(config.courseSelection() == AgilityCourse.AGILITY_PYRAMID)
+        if(config.courseSelection() == AgilityCourse.AGILITY_PYRAMID
+                && (client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_RIGHT) || client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_LEFT)))
         {
-            if((client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_RIGHT) || client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_LEFT))
-                    && pyramidTop.getRenderable().getModelHeight() == 309)
-            {
-                event.setMenuEntry(createPyramidTopMenuEntry());
-                return;
-            }
+            event.setMenuEntry(createPyramidTopMenuEntry());
+            return;
         }
 
         ObstacleArea obstacleArea = course.getCurrentObstacleArea(client.getLocalPlayer());
@@ -389,7 +385,6 @@ public class OneClickAgilityPlugin extends Plugin
             event.consume();
             LocalPoint point = LocalPoint.fromWorld(client, new WorldPoint(event.getParam0(),event.getParam1(),client.getPlane()));
             walkTile(point.getSceneX(), point.getSceneY());
-
         }
     }
 
