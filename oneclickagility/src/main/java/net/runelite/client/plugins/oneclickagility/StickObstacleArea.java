@@ -2,35 +2,30 @@ package net.runelite.client.plugins.oneclickagility;
 
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import net.runelite.api.GroundObject;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.queries.GroundObjectQuery;
-import net.runelite.api.queries.TileObjectQuery;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StickObstacleArea extends SpecificObstacleArea
 {
-    Client client;
-    StickObstacleArea(int minX, int maxX, int minY, int maxY, int z, int nextObstacleID, WorldPoint obstacleLocation, Client client)
+    StickObstacleArea(int minX, int maxX, int minY, int maxY, int z, int nextObstacleID, WorldPoint obstacleLocation)
     {
         super(minX, maxX, minY, maxY, z, nextObstacleID, obstacleLocation);
-        this.client = client;
     }
 
     @Override
-    public MenuEntry createMenuEntry()
+    public MenuEntry createMenuEntry(Client client)
     {
-        TileItem stick = getStick();
+        TileItem stick = getStick(client);
         if (stick != null)
         {
-            return new MenuEntry("Take",
+            return client.createMenuEntry("Take",
                     "Stick",
                     4179,
                     MenuAction.GROUND_ITEM_THIRD_OPTION.getId(),
@@ -40,12 +35,12 @@ public class StickObstacleArea extends SpecificObstacleArea
         }
         else
         {
-            return super.createMenuEntry();
+            return super.createMenuEntry(client);
         }
     }
 
     //theres probably an api for this, but i couldnt find it
-    private TileItem getStick()
+    private TileItem getStick(Client client)
     {
         List<Tile> tilesList = new ArrayList<>();
         Scene scene = client.getScene();

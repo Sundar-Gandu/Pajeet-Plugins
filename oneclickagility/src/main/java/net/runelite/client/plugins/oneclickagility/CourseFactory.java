@@ -284,9 +284,9 @@ public class CourseFactory
                                 new SpecificObstacleArea(3537,3544,9900,9904,0,
                                         11657, new WorldPoint(3541, 9905, 0)),
                                 new StickObstacleArea(3533,3546,9909,9915,0,
-                                        11641, new WorldPoint(3532, 9910, 0), client),
+                                        11641, new WorldPoint(3532, 9910, 0)),
                                 new ObstacleArea(3526,3532,9907,9912,0,11644),
-                                new WerewolfObstacleArea(client)
+                                new WerewolfObstacleArea()
                         ))
                 );
             default:

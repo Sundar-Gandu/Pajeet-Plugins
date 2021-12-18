@@ -154,7 +154,7 @@ public class OneClick2TickPlugin extends Plugin
 
    private MenuEntry createDropMenuEntry(WidgetItem item)
    {
-      return new MenuEntry("Drop",
+      return client.createMenuEntry("Drop",
               "Item",
               item.getId(),
               MenuAction.ITEM_FIFTH_OPTION.getId(),

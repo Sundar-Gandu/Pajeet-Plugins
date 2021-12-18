@@ -1,19 +1,14 @@
 package net.runelite.client.plugins.oneclickagility;
 
-import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.TileObject;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Course
 {
-    @Inject
-    private Client client;
-
     List<Integer> obstacleIDs;
     List<ObstacleArea> obstacleAreaList;
 

@@ -16,23 +16,20 @@ import java.util.Collections;
 
 public class WerewolfObstacleArea extends ObstacleArea
 {
-    private final Client client;
-
-    WerewolfObstacleArea(Client client)
+    WerewolfObstacleArea()
     {
         super(3523, 3549, 9861, 9897, 0, -1);
-        this.client = client;
     }
 
     WorldPoint point = new WorldPoint(3538, 9874, 0);
 
     @Override
-    public MenuEntry createMenuEntry()
+    public MenuEntry createMenuEntry(Client client)
     {
         NPC werewolf = new NPCQuery().idEquals(5927).result(client).first();
         if (client.getLocalPlayer().getWorldLocation().getY() > 9875)
         {
-            return new MenuEntry("Walk here",
+            return client.createMenuEntry("Walk here",
                     "",
                     0,
                     MenuAction.WALK.getId(),
@@ -40,8 +37,8 @@ public class WerewolfObstacleArea extends ObstacleArea
                     9866,
                     false);
         }
-        else if (getWidgetItem(Collections.singletonList(4179)) != null && werewolf != null)
-            return new MenuEntry("Give-Stick",
+        else if (getWidgetItem(Collections.singletonList(4179),client) != null && werewolf != null)
+            return client.createMenuEntry("Give-Stick",
                     "Agility Trainer",
                     werewolf.getIndex(),
                     MenuAction.NPC_FIRST_OPTION.getId(),
@@ -49,7 +46,7 @@ public class WerewolfObstacleArea extends ObstacleArea
                     0,
                     false);
         else
-            return new MenuEntry("Walk here",
+            return client.createMenuEntry("Walk here",
                     "",
                     0,
                     MenuAction.WALK.getId(),
@@ -60,7 +57,7 @@ public class WerewolfObstacleArea extends ObstacleArea
     }
 
 
-    public WidgetItem getWidgetItem(Collection<Integer> ids) {
+    public WidgetItem getWidgetItem(Collection<Integer> ids,Client client) {
         Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
         if (inventoryWidget != null) {
             Collection<WidgetItem> items = inventoryWidget.getWidgetItems();

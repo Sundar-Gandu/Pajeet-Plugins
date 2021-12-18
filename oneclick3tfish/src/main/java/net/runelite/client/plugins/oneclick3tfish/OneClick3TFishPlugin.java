@@ -202,7 +202,7 @@ public class OneClick3TFishPlugin extends Plugin
       client.setSelectedItemSlot(highlightedItem.getIndex());
       client.setSelectedItemID(highlightedItem.getId());
 
-      event.setMenuEntry(new MenuEntry("Use",
+      event.setMenuEntry(client.createMenuEntry("Use",
               "Item -> Item",
               usedItem.getId(),
               MenuAction.ITEM_USE_ON_WIDGET_ITEM.getId(),
@@ -213,7 +213,6 @@ public class OneClick3TFishPlugin extends Plugin
 
    private void tickCooldown()
    {
-      int temp = tick;
       if(tick == 0)
          return;
       else if(tick == 3)
@@ -237,7 +236,14 @@ public class OneClick3TFishPlugin extends Plugin
 
    private MenuEntry createDropMenuEntry(WidgetItem item)
    {
-      return new MenuEntry("Drop", "Item", item.getId(), MenuAction.ITEM_FIFTH_OPTION.getId(), item.getIndex(), 9764864, false);
+      return client.createMenuEntry(
+              "Drop",
+              "Item",
+              item.getId(),
+              MenuAction.ITEM_FIFTH_OPTION.getId(),
+              item.getIndex(),
+              9764864,
+              false);
    }
 
    public void sendGameMessage(String message) {

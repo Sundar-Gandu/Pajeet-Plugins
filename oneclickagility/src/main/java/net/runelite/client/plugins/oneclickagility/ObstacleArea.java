@@ -3,6 +3,7 @@ package net.runelite.client.plugins.oneclickagility;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Locatable;
 import net.runelite.api.MenuAction;
@@ -10,9 +11,12 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 
+import javax.inject.Inject;
+
 @Slf4j
 public class ObstacleArea
 {
+    private Client client;
     private final int minX;
     private final int maxX;
     private final int minY;
@@ -48,12 +52,12 @@ public class ObstacleArea
         return x >= minX && x <= maxX && y >= minY && y <= maxY && z == this.z;
     }
 
-    public MenuEntry createMenuEntry()
+    public MenuEntry createMenuEntry(Client client)
     {
         if (nextObstacle != null)
         {
-            return new MenuEntry(nextObstacle.getActions()[0],
-                    nextObstacle.getName(),
+            return client.createMenuEntry("test",
+                    "test",
                     nextObstacle.getId(),
                     MenuAction.GAME_OBJECT_FIRST_OPTION.getId(),
                     getObjectParam(nextObstacle),

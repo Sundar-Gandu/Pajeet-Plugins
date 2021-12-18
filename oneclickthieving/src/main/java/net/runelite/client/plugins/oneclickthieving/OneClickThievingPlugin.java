@@ -125,7 +125,7 @@ public class OneClickThievingPlugin extends Plugin
    @Subscribe
    private void onClientTick(ClientTick event)
    {
-      if(!config.clickOverride() || client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN)
+      if(!config.clickOverride() || client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
          return;
       client.insertMenuItem(
               "One Click Pickpocket",
@@ -146,7 +146,7 @@ public class OneClickThievingPlugin extends Plugin
          NPC npc =  new NPCQuery().idEquals(config.npcID()).result(client).nearestTo(client.getLocalPlayer());
          if (npc != null)
          {
-            event.setMenuEntry(new MenuEntry(
+            event.setMenuEntry(client.createMenuEntry(
                     "Pickpocket",
                      npc.getName(),
                      npc.getIndex(),
@@ -237,7 +237,7 @@ public class OneClickThievingPlugin extends Plugin
          else if (food != null)
          {
             String[] foodMenuOptions = itemManager.getItemComposition(food.getId()).getInventoryActions();
-            event.setMenuEntry(new MenuEntry(
+            event.setMenuEntry(client.createMenuEntry(
                     foodMenuOptions[0],
                     foodMenuOptions[0],
                     food.getId(),
@@ -252,7 +252,7 @@ public class OneClickThievingPlugin extends Plugin
 
       if (config.enableCoinPouch() && coinpouch != null && coinpouch.getQuantity() == 28)
       {
-         event.setMenuEntry(new MenuEntry(
+         event.setMenuEntry(client.createMenuEntry(
                  "Open-all",
                  "Coin Pouch",
                  coinpouch.getId(),
@@ -264,7 +264,7 @@ public class OneClickThievingPlugin extends Plugin
       //dodgy necklace
       else if(config.enableNecklace() && getWidgetItem(DODGY_NECKLACE_ID) != null && !isItemEquipped(List.of(DODGY_NECKLACE_ID)))
       {
-         event.setMenuEntry(new MenuEntry(
+         event.setMenuEntry(client.createMenuEntry(
                  "Wear",
                  "Necklace",
                  DODGY_NECKLACE_ID,
@@ -284,7 +284,7 @@ public class OneClickThievingPlugin extends Plugin
          }
          else
          {
-            event.setMenuEntry(new MenuEntry(
+            event.setMenuEntry(client.createMenuEntry(
                     "Cast",
                     "Shadow Veil",
                     1,
@@ -301,7 +301,7 @@ public class OneClickThievingPlugin extends Plugin
             WidgetItem prayerPotion = getWidgetItem(prayerPotionIDs);
             if (prayerPotion != null)
             {
-               event.setMenuEntry(new MenuEntry(
+               event.setMenuEntry(client.createMenuEntry(
                        "Drink",
                        "Prayer",
                        prayerPotion.getId(),
@@ -323,7 +323,7 @@ public class OneClickThievingPlugin extends Plugin
             if ((config.prayMethod() == PrayMethod.REACTIVE_PRAY && shouldPray())
                     || config.prayMethod() == PrayMethod.LAZY_PRAY)
             {
-               event.setMenuEntry(new MenuEntry(
+               event.setMenuEntry(client.createMenuEntry(
                        "Activate",
                        "Redemption",
                        1,

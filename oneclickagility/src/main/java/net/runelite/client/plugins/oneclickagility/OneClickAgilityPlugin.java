@@ -138,7 +138,7 @@ public class OneClickAgilityPlugin extends Plugin
     @Subscribe (priority = 1)
     private void onClientTick(ClientTick event)
     {
-        if(client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN) return;
+        if(client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen()) return;
         String text;
 
         if(course.getCurrentObstacleArea(client.getLocalPlayer()) == null)
@@ -157,14 +157,14 @@ public class OneClickAgilityPlugin extends Plugin
             text =  "<col=00ff00>One Click Agility";
         }
 
-        client.insertMenuItem(
-                text,
-                "",
-                MenuAction.UNKNOWN.getId(),
-                0,
-                0,
-                0,
-                true);
+        client.createMenuEntry(-1)
+                .setOption(text)
+                .setTarget("")
+                .setType(MenuAction.UNKNOWN)
+                .setIdentifier(0)
+                .setParam0(0)
+                .setParam1(0)
+                .setForceLeftClick(true);
     }
 
     @Subscribe
@@ -382,7 +382,7 @@ public class OneClickAgilityPlugin extends Plugin
             return;
         }
 
-        event.setMenuEntry(obstacleArea.createMenuEntry());
+        event.setMenuEntry(obstacleArea.createMenuEntry(client));
 
         if (event.getMenuOption().equals("Walk here"))
         {
@@ -438,7 +438,7 @@ public class OneClickAgilityPlugin extends Plugin
 
     private MenuEntry createSeersTeleportMenuEntry()
     {
-        return new MenuEntry(
+        return client.createMenuEntry(
                 "Seers'",
                 "Camelot Teleport",
                 2,
@@ -451,7 +451,7 @@ public class OneClickAgilityPlugin extends Plugin
     private MenuEntry createSummerPieMenuEntry(WidgetItem food)
     {
         String[] foodMenuOptions = itemManager.getItemComposition(food.getId()).getInventoryActions();
-        return new MenuEntry(
+        return client.createMenuEntry(
                 foodMenuOptions[0],
                 foodMenuOptions[0],
                 food.getId(),
@@ -463,7 +463,7 @@ public class OneClickAgilityPlugin extends Plugin
 
     private MenuEntry createMarkMenuEntry(Tile tile)
     {
-        return new MenuEntry("Take",
+        return client.createMenuEntry("Take",
                 "Mark of Grace",
                 MARK_ID,
                 MenuAction.GROUND_ITEM_THIRD_OPTION.getId(),
@@ -474,7 +474,7 @@ public class OneClickAgilityPlugin extends Plugin
 
     private MenuEntry createPortalMenuEntry(GameObject portal)
     {
-        return new MenuEntry(
+        return client.createMenuEntry(
                 "Travel",
                 "Portal",
                 portal.getId(),
@@ -487,7 +487,7 @@ public class OneClickAgilityPlugin extends Plugin
 
     private MenuEntry createPyramidTopMenuEntry()
     {
-        return new MenuEntry(
+        return client.createMenuEntry(
                 "Climb",
                 "Climbing rocks",
                 pyramidTopObstacle.getId(),

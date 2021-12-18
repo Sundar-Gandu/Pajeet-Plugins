@@ -72,7 +72,7 @@ public class OneClickDropperPlugin extends Plugin
    @Override
    protected void startUp()
    {
-      config();
+      parseConfig();
    }
 
    @Override
@@ -89,7 +89,7 @@ public class OneClickDropperPlugin extends Plugin
    {
       if(event.getGroup().equals("oneclickdropper"))
       {
-         config();
+         parseConfig();
          dropping = false;
          clientThread.execute(this::createDropList);
       }
@@ -98,7 +98,12 @@ public class OneClickDropperPlugin extends Plugin
    @Subscribe
    private void onMenuOptionClicked(MenuOptionClicked event)
    {
-      if(dropping && event.getMenuOption().equals("One Click Drop"))
+      log.info("click");
+      if (event.getMenuOption().equals("One Click Drop"))
+         log.info("drop");
+      else
+         return;
+      if(dropping)
       {
          if(dropListIterator.hasNext())
          {
@@ -118,19 +123,20 @@ public class OneClickDropperPlugin extends Plugin
               || client.getGameState() != GameState.LOGGED_IN
               || client.getItemContainer(InventoryID.BANK) != null
               || client.getWidget(WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER) != null
+              || client.isMenuOpen()
       )
          return;
 
       if(dropping)
       {
-         client.insertMenuItem(
-                 "One Click Drop",
-                 "",
-                 MenuAction.UNKNOWN.getId(),
-                 0,
-                 0,
-                 0,
-                 true);
+         client.createMenuEntry(-1)
+                 .setOption("One Click Drop")
+                 .setTarget("")
+                 .setIdentifier(0)
+                 .setType(MenuAction.UNKNOWN)
+                 .setParam0(0)
+                 .setParam1(0)
+                 .setForceLeftClick(true);
       }
    }
 
@@ -207,10 +213,17 @@ public class OneClickDropperPlugin extends Plugin
 
    private MenuEntry createDropMenuEntry(WidgetItem item)
    {
-      return new MenuEntry("Drop", "Item", item.getId(), MenuAction.ITEM_FIFTH_OPTION.getId(), item.getIndex(), 9764864, false);
+      return client.createMenuEntry(
+              "Drop",
+              "Item",
+              item.getId(),
+              MenuAction.ITEM_FIFTH_OPTION.getId(),
+              item.getIndex(),
+              9764864,
+              false);
    }
 
-   private void config()
+   private void parseConfig()
    {
       dropIDs = new HashSet<>();
       dropOrder = new HashMap<>();
