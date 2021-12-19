@@ -319,7 +319,8 @@ public class OneClickAgilityPlugin extends Plugin
         }
 
         if(config.courseSelection() == AgilityCourse.AGILITY_PYRAMID
-                && (client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_RIGHT) || client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_LEFT)))
+                && (client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_RIGHT) || client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_LEFT))
+                && pyramidTop.getRenderable().getModelHeight() == 309)
         {
             event.setMenuEntry(createPyramidTopMenuEntry());
             return;
@@ -372,7 +373,8 @@ public class OneClickAgilityPlugin extends Plugin
 
         if(config.consumeMisclicks() &&
                 (client.getLocalPlayer().isMoving()
-                        || client.getLocalPlayer().getPoseAnimation() != client.getLocalPlayer().getIdlePoseAnimation()))
+                        || client.getLocalPlayer().getPoseAnimation() != client.getLocalPlayer().getIdlePoseAnimation()
+                        || client.getLocalPlayer().getAnimation() != -1))
         {
             event.consume();
             return;
