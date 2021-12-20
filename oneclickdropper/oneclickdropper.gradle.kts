@@ -1,4 +1,4 @@
-version = "1.0.4"
+version = "1.0.5"
 
 project.extra["PluginName"] = "One Click Dropper"
 project.extra["PluginDescription"] = "Drop items without having to click on them"

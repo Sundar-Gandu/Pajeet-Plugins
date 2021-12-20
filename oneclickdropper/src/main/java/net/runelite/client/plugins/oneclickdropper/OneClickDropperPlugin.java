@@ -129,14 +129,15 @@ public class OneClickDropperPlugin extends Plugin
 
       if(dropping)
       {
-         client.createMenuEntry(-1)
-                 .setOption("One Click Drop")
-                 .setTarget("")
-                 .setIdentifier(0)
-                 .setType(MenuAction.UNKNOWN)
-                 .setParam0(0)
-                 .setParam1(0)
-                 .setForceLeftClick(true);
+         client.insertMenuItem(
+                 "One Click Drop",
+                 "",
+                 MenuAction.UNKNOWN.getId(),
+                 0,
+                 0,
+                 0,
+                 true
+         );
       }
    }
 
