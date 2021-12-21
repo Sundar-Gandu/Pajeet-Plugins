@@ -105,29 +105,27 @@ public class OneClick2TickPlugin extends Plugin
 
       if (tick <= 1)
       {
+         //lets the menu entry go through normally
          cooldown = true;
          return;
       }
       else if (tick == 2)
       {
          WidgetItem itemToDrop = getWidgetItem(dropIDs);
-         if (itemToDrop != null)
+         if (itemToDrop != null && config.dropItems())
          {
             event.setMenuEntry(createDropMenuEntry(itemToDrop));
          }
          else if (event.getMenuTarget().contains("Teak"))
          {
             event.consume();
-            cooldown = true;
             walkTile(event.getParam0(),event.getParam1());
-            return;
          }
          else
          {
             event.consume();
          }
          cooldown = true;
-         return;
       }
    }
 
