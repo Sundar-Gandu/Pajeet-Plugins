@@ -282,7 +282,7 @@ public class OneClickThievingPlugin extends Plugin
             notifier.notify("You are on the wrong spellbook");
             sendGameMessage("You are on the wrong spellbook");
          }
-         else
+         else if(client.getBoostedSkillLevel(Skill.MAGIC) >= 47)
          {
             event.setMenuEntry(client.createMenuEntry(
                     "Cast",
@@ -292,6 +292,12 @@ public class OneClickThievingPlugin extends Plugin
                     -1,
                     WidgetInfo.SPELL_SHADOW_VEIL.getId(),
                     false));
+         } 
+         else 
+         {
+            event.consume();
+            notifier.notify("Magic level too low to cast this spell!");
+            sendGameMessage("Magic level too low to cast this spell!");
          }
       }
       else if(config.enablePray())
