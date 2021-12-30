@@ -217,7 +217,7 @@ public class OneClickThievingPlugin extends Plugin
          event.consume();
          return;
       }
-      if (!event.getMenuOption().equals("Pickpocket"))
+      if (!event.getMenuOption().equals("Pickpocket") && !event.getMenuOption().contains("Knock-Out"))
       {
          return;
       }
