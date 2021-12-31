@@ -103,12 +103,23 @@ public class OneClickThievingPlugin extends Plugin
 
    private static final int DODGY_NECKLACE_ID = 21143;
 
+   private boolean npcKnockedOut = false;
+
+   private long nextKnockOutTick = 0L;
+
+   private boolean foodIsOut = false;
+
    @Subscribe
    public void onChatMessage(ChatMessage event)
    {
       if(event.getMessage().contains("You have run out of prayer points"))
       {
          prayerTimeOut = 0;
+      }
+      if(event.getType() == ChatMessageType.SPAM && (event.getMessage().equals("You smack the bandit over the head and render them unconscious."))))
+      {
+         npcKnockedOut = true,
+         nextKnockOutTick = client.getTickCount() + 4;
       }
 
    }
@@ -204,6 +215,14 @@ public class OneClickThievingPlugin extends Plugin
       {
          shouldHeal = true;
       }
+      if(this.client.getTickCount() >= this.nextKnockOutTick)
+      {
+         npcKnockedOut = false;
+      }
+      if(this.config.blackjackResetFood())
+      {
+         foodIsOut = false;
+      }
    }
 
    private List<String> getActions(NPC npc) {
@@ -217,7 +236,7 @@ public class OneClickThievingPlugin extends Plugin
          event.consume();
          return;
       }
-      if (!event.getMenuOption().equals("Pickpocket"))
+      if (!event.getMenuOption().equals("Pickpocket") && !event.getMenuOption().contains("Knock-Out"))
       {
          return;
       }
@@ -227,26 +246,49 @@ public class OneClickThievingPlugin extends Plugin
       if(config.enableHeal() && shouldHeal)
       {
          WidgetItem food = getItemMenu(foodMenuOption,foodBlacklist);
-         if (config.haltOnLowFood() && food == null)
+         if(!config.enableBlackjackFix() || foodIsOut)
          {
-            event.consume();
-            notifier.notify("You are out of food");
-            sendGameMessage("You are out of food");
-            return;
+            if (config.haltOnLowFood() && food == null) {
+               event.consume();
+               notifier.notify("You are out of food");
+               sendGameMessage("You are out of food");
+               return;
+           }
          }
-         else if (food != null)
+         if(config.enableBlackjackFix())
          {
-            String[] foodMenuOptions = itemManager.getItemComposition(food.getId()).getInventoryActions();
-            event.setMenuEntry(client.createMenuEntry(
-                    foodMenuOptions[0],
-                    foodMenuOptions[0],
-                    food.getId(),
-                    MenuAction.ITEM_FIRST_OPTION.getId(),
-                    food.getIndex(),
-                    WidgetInfo.INVENTORY.getId(),
-                    false));
-            return;
+            if (config.haltOnLowFood() && food == null && npcKnockedOut) {
+               foodIsOut = true;
+               event.consume();
+               notifier.notify("You are out of food");
+               sendGameMessage("Food is out toggled");
+               return;
+           }
          }
+         if(!config.enableBlackjackFix()){
+            if (food != null) {
+                String[] foodMenuOptions = itemManager.getItemComposition(food.getId()).getInventoryActions();
+                event.setMenuEntry(client.createMenuEntry(foodMenuOptions[0], foodMenuOptions[0], food
+
+                        .getId(), MenuAction.ITEM_FIRST_OPTION
+                        .getId(), food
+                        .getIndex(), WidgetInfo.INVENTORY
+                        .getId(), false));
+                return;
+            }
+        }
+        if(config.enableBlackjackFix()){
+            if(food != null && npcKnockedOut){
+                String[] foodMenuOptions = itemManager.getItemComposition(food.getId()).getInventoryActions();
+                event.setMenuEntry(this.client.createMenuEntry(foodMenuOptions[0], foodMenuOptions[0], food
+
+                        .getId(), MenuAction.ITEM_FIRST_OPTION
+                        .getId(), food
+                        .getIndex(), WidgetInfo.INVENTORY
+                        .getId(), false));
+                return;
+            }
+        }
          //else fallthrough
       }
 

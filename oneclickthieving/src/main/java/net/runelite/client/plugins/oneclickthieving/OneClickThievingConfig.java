@@ -158,4 +158,21 @@ public interface OneClickThievingConfig extends Config
     {
         return false;
     }
+    @ConfigItem(
+            keyName = "blackjackFix",
+            name = "Blackjack Fix",
+            description = "This will try to prevent you from dying while left click blackjacking",
+            position = 10
+            )
+    default boolean enableBlackjackFix() {
+        return false;
+    }
+    @ConfigItem(
+            keyName = "blackjackResetFood",
+            name = "Blackjack reset food",
+            description = "This is used in blackjacking only. Toggle on and back off when you have restocked food.",
+            position = 11)
+    default boolean blackjackResetFood() {
+        return false;
+    }
 }
