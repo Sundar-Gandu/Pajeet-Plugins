@@ -98,11 +98,8 @@ public class OneClickDropperPlugin extends Plugin
    @Subscribe
    private void onMenuOptionClicked(MenuOptionClicked event)
    {
-      log.info("click");
-      if (event.getMenuOption().equals("One Click Drop"))
-         log.info("drop");
-      else
-         return;
+      if (!event.getMenuOption().equals("One Click Drop")) return;
+
       if(dropping)
       {
          if(dropListIterator.hasNext())
@@ -159,7 +156,7 @@ public class OneClickDropperPlugin extends Plugin
       {
          updateDropList();
       }
-      else if (size >= previousSize && !config.requireFullInventory())
+      else if (!dropping || (size >= previousSize && !config.requireFullInventory()))
       {
          updateDropList();
       }
@@ -258,7 +255,7 @@ public class OneClickDropperPlugin extends Plugin
          }
          catch (Exception ignored)
          {
-            log.info("Exception ignored");
+            //catches the error from Integer.parseInt()
          }
       }
    }
