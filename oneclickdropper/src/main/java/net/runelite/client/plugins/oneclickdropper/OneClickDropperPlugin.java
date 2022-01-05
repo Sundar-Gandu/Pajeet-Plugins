@@ -156,7 +156,7 @@ public class OneClickDropperPlugin extends Plugin
       {
          updateDropList();
       }
-      else if (!dropping || (size >= previousSize && !config.requireFullInventory()))
+      else if (!config.requireFullInventory() && (!dropping || size >= previousSize))
       {
          updateDropList();
       }
