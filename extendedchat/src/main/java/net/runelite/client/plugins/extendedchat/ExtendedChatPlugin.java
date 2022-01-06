@@ -42,7 +42,7 @@ import java.util.Map;
 @PluginDescriptor(
       name = "Chat Extended",
       description = "Chat filtering, Ctrl+V pasting, and retype previous message",
-      tags = {"Sundar"},
+      tags = {"sundar", "pajeet"},
       enabledByDefault = false
 )
 

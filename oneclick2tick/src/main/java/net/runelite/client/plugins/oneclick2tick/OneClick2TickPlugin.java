@@ -26,7 +26,7 @@ import java.util.Set;
 @PluginDescriptor(
       name = "One Click 2 Tick",
       description = "2 tick teaks and fishing",
-      tags = {"Sundar"},
+      tags = {"sundar", "pajeet"},
       enabledByDefault = false
 )
 

@@ -32,7 +32,7 @@ import java.util.Set;
 @PluginDescriptor(
       name = "One Click 3T Fish",
       description = "3 tick fishing made easy",
-      tags = {"Sundar"},
+      tags = {"sundar", "pajeet"},
       enabledByDefault = false
 )
 

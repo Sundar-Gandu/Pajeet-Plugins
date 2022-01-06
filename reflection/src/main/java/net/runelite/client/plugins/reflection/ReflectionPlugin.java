@@ -66,7 +66,7 @@ import org.pf4j.Extension;
 @Extension
 @PluginDescriptor(
         name = "Reflection",
-        tags = {"config", "rewriter", "reflection", "zhuri/nicole"},
+        tags = {"config", "rewriter", "reflection", "zhuri/nicole","sundar", "pajeet"},
         enabledByDefault = false
 )
 @PluginDependency(ConfigPlugin.class)

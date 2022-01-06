@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 @PluginDescriptor(
       name = "One Click Pickpocket",
       description = "QOL for pickpocketing",
-      tags = {"Sundar","Pickpocket","Skilling","Thieving"},
+      tags = {"sundar", "pajeet","pickpocket","skilling","thieving"},
       enabledByDefault = false
 )
 

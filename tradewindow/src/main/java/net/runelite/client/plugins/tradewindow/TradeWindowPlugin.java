@@ -17,7 +17,7 @@ import javax.inject.Inject;
 @PluginDescriptor(
       name = "Easy Trade",
       description = "Resizes accept button in trade window",
-      tags = {"Sundar"},
+      tags = {"sundar", "pajeet"},
       enabledByDefault = false
 )
 

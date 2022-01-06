@@ -1,4 +1,4 @@
-version = "1.0.0"
+version = "1.0.1"
 
 project.extra["PluginName"] = "Hide Fake Claws"
 project.extra["PluginDescription"] = "Disable animation of django claws"

@@ -51,7 +51,7 @@ import java.util.Set;
 @PluginDescriptor(
         name = "One Click Agility",
         description = "Reclined gaming",
-        tags = {"Sundar","Agility","One Click","Skilling"},
+        tags = {"sundar", "pajeet","agility","one click","skilling"},
         enabledByDefault = false
 )
 

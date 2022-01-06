@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @PluginDescriptor(
       name = "Sound Filter",
       description = "Filter ingame sounds using a white/blacklist",
-      tags = {"Sundar","sound"},
+      tags = {"sundar", "pajeet","sound"},
       enabledByDefault = false
 )
 

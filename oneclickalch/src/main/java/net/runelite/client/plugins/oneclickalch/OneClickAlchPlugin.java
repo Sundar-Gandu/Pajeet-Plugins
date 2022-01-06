@@ -25,7 +25,7 @@ import java.util.Collection;
 @PluginDescriptor(
       name = "One Click Alch",
       description = "click anywhere to alch",
-      tags = {"Sundar","High Alchemy"},
+      tags = {"sundar", "pajeet"},
       enabledByDefault = false
 )
 public class OneClickAlchPlugin extends Plugin

@@ -35,7 +35,7 @@ import java.util.Set;
 @PluginDescriptor(
       name = "One Click Dropper",
       description = "Drop items without having to click on them",
-      tags = {"Sundar"},
+      tags = {"sundar", "pajeet"},
       enabledByDefault = false
 )
 
