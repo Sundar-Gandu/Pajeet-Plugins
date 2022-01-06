@@ -31,6 +31,17 @@ public interface OneClick3TFishConfig extends Config
 
     @ConfigItem(
             position = 2,
+            keyName = "clickAnywhere",
+            name = "Click Anywhere",
+            description = "Enable this if you dont want to manually click on the spot"
+    )
+    default boolean clickAnywhere()
+    {
+        return false;
+    }
+
+    @ConfigItem(
+            position = 3,
             keyName = "dropFish",
             name = "Drop Fish",
             description = "Drop fish if you click right after tick manipulating"

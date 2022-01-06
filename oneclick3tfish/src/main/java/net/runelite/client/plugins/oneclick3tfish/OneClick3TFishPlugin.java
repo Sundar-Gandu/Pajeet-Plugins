@@ -5,9 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -77,6 +80,15 @@ public class OneClick3TFishPlugin extends Plugin
    Set<Integer> clawID = Set.of(10113);
 
 
+   @Subscribe
+   private void onClientTick(ClientTick event)
+   {
+      if (config.clickAnywhere())
+      {
+         client.insertMenuItem("One Click 3t Fish","",MenuAction.UNKNOWN.getId(),0,0,0,false);
+      }
+   }
+
 
    @Subscribe
    private void onGameTick(GameTick event)
@@ -87,7 +99,7 @@ public class OneClick3TFishPlugin extends Plugin
    }
 
    @Subscribe
-   private void onClientTick(MenuEntryAdded event)
+   private void onMenuEntryAdded(MenuEntryAdded event)
    {
       if(tick < 2 || !config.flavorText() || !event.getTarget().contains("Fishing spot"))
       {
@@ -107,6 +119,25 @@ public class OneClick3TFishPlugin extends Plugin
    @Subscribe
    private void onMenuOptionClicked(MenuOptionClicked event)
    {
+      if (event.getMenuOption().contains("One Click 3t Fish"))
+      {
+         NPC fishingSpot = new NPCQuery()
+                 .nameContains("Fishing spot")
+                 .result(client)
+                 .nearestTo(client.getLocalPlayer());
+         if (fishingSpot != null)
+         {
+            event.setMenuEntry(createFishMenuEntry(fishingSpot));
+         }
+         else
+         {
+            sendGameMessage("Cant find fishing spot");
+            event.consume();
+            return;
+         }
+
+      }
+
       if (!event.getMenuTarget().contains("Fishing spot"))
          return;
 
@@ -243,6 +274,18 @@ public class OneClick3TFishPlugin extends Plugin
               MenuAction.ITEM_FIFTH_OPTION.getId(),
               item.getIndex(),
               9764864,
+              false);
+   }
+
+   private MenuEntry createFishMenuEntry(NPC fish)
+   {
+      return client.createMenuEntry(
+              "Cast",
+              "Fishing spot",
+              fish.getIndex(),
+              MenuAction.NPC_FIRST_OPTION.getId(),
+              0,
+              0,
               false);
    }
 
