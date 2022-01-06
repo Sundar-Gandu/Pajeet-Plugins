@@ -19,6 +19,7 @@ import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemDespawned;
@@ -81,6 +82,7 @@ public class OneClickAgilityPlugin extends Plugin
     }
 
     private static final int MARK_ID = 11849;
+    private static final int HIGH_ALCH_GRAPHIC = 113;
     private static final Set<Integer> PORTAL_IDS = Set.of(36241,36242,36243,36244,36245,36246);
     private static final Set<Integer> SUMMER_PIE_ID = Set.of(7220,7218);
     private static final WorldPoint SEERS_END = new WorldPoint(2704,3464,0);
@@ -92,6 +94,7 @@ public class OneClickAgilityPlugin extends Plugin
     DecorativeObject pyramidTopObstacle;
     GameObject pyramidTop;
     Course course;
+    boolean hasAlched;
 
     @Override
     protected void startUp()
@@ -157,14 +160,16 @@ public class OneClickAgilityPlugin extends Plugin
             text =  "<col=00ff00>One Click Agility";
         }
 
-        client.createMenuEntry(-1)
-                .setOption(text)
-                .setTarget("")
-                .setType(MenuAction.UNKNOWN)
-                .setIdentifier(0)
-                .setParam0(0)
-                .setParam1(0)
-                .setForceLeftClick(true);
+        client.insertMenuItem(text, "", MenuAction.UNKNOWN.getId(), 0, 0, 0, true);
+    }
+
+    @Subscribe
+    private void onGraphicChanged(GraphicChanged event)
+    {
+        if (event.getActor().equals(client.getLocalPlayer()) && client.getLocalPlayer().getGraphic() == HIGH_ALCH_GRAPHIC)
+        {
+            hasAlched = true;
+        }
     }
 
     @Subscribe
@@ -371,16 +376,18 @@ public class OneClickAgilityPlugin extends Plugin
             }
         }
 
-        if(config.consumeMisclicks() &&
-                (client.getLocalPlayer().isMoving()
-                        || client.getLocalPlayer().getPoseAnimation() != client.getLocalPlayer().getIdlePoseAnimation()
-                        || client.getLocalPlayer().getAnimation() != -1))
+        if(shouldConsume())
         {
             event.consume();
             return;
         }
 
         event.setMenuEntry(obstacleArea.createMenuEntry(client));
+
+        if (hasAlched)
+        {
+            hasAlched = false;
+        }
 
         if (event.getMenuOption().equals("Walk here"))
         {
@@ -422,6 +429,15 @@ public class OneClickAgilityPlugin extends Plugin
             }
         }
         return null;
+    }
+
+    private boolean shouldConsume()
+    {
+        if (!config.consumeMisclicks() || hasAlched)
+            return false;
+        return (client.getLocalPlayer().isMoving()
+                || client.getLocalPlayer().getPoseAnimation() != client.getLocalPlayer().getIdlePoseAnimation()
+                || client.getLocalPlayer().getAnimation() != -1);
     }
 
     private void walkTile(int x, int y)
