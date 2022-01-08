@@ -26,7 +26,11 @@ package net.runelite.client.plugins.reflection;
 
 import com.google.inject.Provides;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -75,6 +79,7 @@ public class ReflectionPlugin extends Plugin
 {
     private static final BufferedImage[] CONFIG_RESOURCES = new BufferedImage[2];
     private static final File ICON_FILE = new File(RuneLite.RUNELITE_DIR, "icon.png");
+    private static final Color originalColour = ColorScheme.BRAND_ORANGE;
 
     static
     {
@@ -107,7 +112,7 @@ public class ReflectionPlugin extends Plugin
             return new ImageIcon(img);
         } else
         {
-            return new ImageIcon(ImageUtil.recolorImage(image, ColorScheme.BRAND_BLUE));
+            return new ImageIcon(ImageUtil.recolorImage(image, originalColour));
         }
     }
 
@@ -251,6 +256,52 @@ public class ReflectionPlugin extends Plugin
 
     private void updatePluginListResourceImages(boolean restore)
     {
+        try
+        {
+            Class<?> colorScheme = Class.forName("net.runelite.client.ui.ColorScheme");
+            Field osField = colorScheme.getDeclaredField("BRAND_BLUE");
+            osField.setAccessible(true);
+            Field modifiers = Field.class.getDeclaredField("modifiers");
+            modifiers.setAccessible(true);
+            modifiers.setInt(osField, osField.getModifiers() & -17);
+            osField.set(null,restore ? originalColour : config.pluginSwitcherOnColor());
+
+        }
+        catch (Exception e)
+        {
+            log.debug("Exception Message -> {}", e.getMessage());
+        }
+        try
+        {
+            Class<?> colorScheme = Class.forName("net.runelite.client.ui.ColorScheme");
+            Field osField = colorScheme.getDeclaredField("BRAND_ORANGE");
+            osField.setAccessible(true);
+            Field modifiers = Field.class.getDeclaredField("modifiers");
+            modifiers.setAccessible(true);
+            modifiers.setInt(osField, osField.getModifiers() & -17);
+            osField.set(null, restore ? originalColour : config.pluginSwitcherOnColor());
+
+        }
+        catch (Exception e)
+        {
+            log.debug("Exception Message -> {}", e.getMessage());
+        }
+        try
+        {
+            Class<?> colorScheme = Class.forName("net.runelite.client.ui.components.ToggleButton");
+            Field osField = colorScheme.getDeclaredField("ON_SWITCHER");
+            osField.setAccessible(true);
+            Field modifiers = Field.class.getDeclaredField("modifiers");
+            modifiers.setAccessible(true);
+            modifiers.setInt(osField, osField.getModifiers() & -17);
+            osField.set(null, remapImage(CONFIG_RESOURCES[1], config.pluginSwitcherOnColor(), restore));
+
+        }
+        catch (Exception e)
+        {
+            log.debug("Exception Message -> {}", e.getMessage());
+        }
+
         ConfigPlugin configPlugin = (ConfigPlugin) pluginManager.getPlugins().stream().filter((plugin) ->
                 plugin instanceof ConfigPlugin).findAny().orElse(null);
         if (configPlugin == null)
@@ -277,14 +328,7 @@ public class ReflectionPlugin extends Plugin
                     }
                 }
 
-                Class<?> pluginToggleButton = Class.forName("net.runelite.client.plugins.config.PluginToggleButton");
-                Field osField = pluginToggleButton.getDeclaredField("ON_SWITCHER");
-                osField.setAccessible(true);
-                Field modifiers = Field.class.getDeclaredField("modifiers");
-                modifiers.setAccessible(true);
-                modifiers.setInt(osField, osField.getModifiers() & -17);
-                osField.set(null, remapImage(CONFIG_RESOURCES[1], config.pluginSwitcherOnColor(), restore));
-                List<?> pluginList = (List) FieldUtils.readDeclaredField(pluginListPanel, "pluginList", true);
+                List<?> pluginList = (List<?>) FieldUtils.readDeclaredField(pluginListPanel, "pluginList", true);
 
                 for (Object plugin : pluginList)
                 {
