@@ -9,7 +9,6 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.util.Text;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -185,7 +184,7 @@ public class OneClickDropperPlugin extends Plugin
          for(int i = 0; i <= 27; i++)
          {
             int index = config.customDrop() ? dropOrder.get(i) : i;
-            WidgetItem item = getItemAtIndex(index);
+            WidgetItem item = inventoryWidget.getWidgetItem(index);
             if (item != null && ids.contains(item.getId()))
             {
                matchedItems.add(item);
@@ -196,18 +195,6 @@ public class OneClickDropperPlugin extends Plugin
       return null;
    }
 
-   public WidgetItem getItemAtIndex(int index) {
-      Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      if (inventoryWidget != null) {
-         Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
-         for (WidgetItem item : items) {
-            if (item.getIndex() == index) {
-               return item;
-            }
-         }
-      }
-      return null;
-   }
 
    private MenuEntry createDropMenuEntry(WidgetItem item)
    {
@@ -217,7 +204,7 @@ public class OneClickDropperPlugin extends Plugin
               item.getId(),
               MenuAction.ITEM_FIFTH_OPTION.getId(),
               item.getIndex(),
-              9764864,
+              WidgetInfo.INVENTORY.getId(),
               false);
    }
 
