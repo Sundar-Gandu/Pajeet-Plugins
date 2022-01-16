@@ -6,12 +6,12 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
 import static net.runelite.client.plugins.oneclickthieving.PrayMethod.LAZY_PRAY;
 
-@ConfigGroup("oneclicjthieving")
+@ConfigGroup("oneclickthieving")
 public interface OneClickThievingConfig extends Config
 {
     @ConfigItem(
             keyName = "clickOverride",
-            name = "Clicks Override",
+            name = "Click Anywhere",
             description = "Makes all of your clicks pickpocket chosen NPC",
             position = -2
     )

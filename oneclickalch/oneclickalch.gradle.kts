@@ -1,6 +1,6 @@
-version = "1.0.2"
+version = "1.0.3"
 
-project.extra["PluginName"] = "oneclickalch"
+project.extra["PluginName"] = "One Click Alch"
 project.extra["PluginDescription"] = "click anywhere to alch"
 project.extra["ProjectSupportUrl"] = "https://github.com/Sundar-Gandu/Pajeet-Plugins"
 
