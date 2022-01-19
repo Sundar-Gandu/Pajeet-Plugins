@@ -457,7 +457,7 @@ public class OneClickAgilityPlugin extends Plugin
                 2,
                 MenuAction.CC_OP.getId(),
                 -1,
-                14286879,
+                WidgetInfo.SPELL_CAMELOT_TELEPORT.getId(),
                 true);
     }
 
@@ -470,7 +470,7 @@ public class OneClickAgilityPlugin extends Plugin
                 food.getId(),
                 MenuAction.ITEM_FIRST_OPTION.getId(),
                 food.getIndex(),
-                9764864,
+                WidgetInfo.INVENTORY.getId(),
                 true);
     }
 
