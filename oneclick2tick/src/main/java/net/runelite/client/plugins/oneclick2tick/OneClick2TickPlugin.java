@@ -60,7 +60,7 @@ public class OneClick2TickPlugin extends Plugin
 
    int tick;
    boolean cooldown;
-   Set<Integer> dropIDs = Set.of(359,371,6333);
+   Set<Integer> dropIDs = Set.of(359,371,383,6333);
 
    @Subscribe
    private void onGameTick(GameTick event)
