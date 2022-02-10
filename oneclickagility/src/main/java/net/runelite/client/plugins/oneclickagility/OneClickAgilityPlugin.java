@@ -194,7 +194,7 @@ public class OneClickAgilityPlugin extends Plugin
     }
 
     @Subscribe
-    public void onGameObjectDepawned(GameObjectDespawned event)
+    public void onGameObjectDespawned(GameObjectDespawned event)
     {
         if(event.getGameObject() == null)
         {
