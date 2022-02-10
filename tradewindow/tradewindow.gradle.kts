@@ -1,7 +1,7 @@
 /* 
  * Copyright (c) 2021 Sundar
  */
-version = "1.0.1"
+version = "1.0.2"
 
 project.extra["PluginName"] = "Easy Trade"
 project.extra["PluginDescription"] = "Resizes accept button in trade window"

@@ -63,10 +63,7 @@ public class TradeWindowPlugin extends Plugin
       //this might break stuff, but is required to prioritize accept over other menu options
       widget.setParentId(21954562);
 
-      widget.setOriginalX(0);
-      widget.setOriginalY(0);
-      widget.setOriginalWidth(495);
-      widget.setOriginalHeight(305);
+      widget.setOriginalX(0).setOriginalY(0).setOriginalWidth(495).setOriginalHeight(305);
       clientThread.invoke(widget::revalidate);
 
       for(Widget child:widget.getDynamicChildren())
