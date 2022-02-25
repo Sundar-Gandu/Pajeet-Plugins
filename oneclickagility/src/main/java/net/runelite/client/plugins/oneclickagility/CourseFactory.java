@@ -194,7 +194,7 @@ public class CourseFactory
             case SHAYZIEN_BASIC:
                 return new Course(
                         new ArrayList<>(Arrays.asList(
-                                new ObstacleArea(1520, 1557, 3624, 3641, 0, 42209),
+                                new ObstacleArea(1512, 1557, 3618, 3641, 0, 42209),
                                 new ObstacleArea(1553, 1555, 3631, 3634, 3, 42211),
                                 new ObstacleArea(1538, 1542, 3630, 3635, 2, 42212),
                                 new ObstacleArea(1527, 1529, 3632, 3634, 2, 42213),
@@ -206,7 +206,7 @@ public class CourseFactory
             case SHAYZIEN_ADVANCED:
                 return new Course(
                         new ArrayList<>(Arrays.asList(
-                                new ObstacleArea(1520, 1558, 3624, 3642, 0, 42209),
+                                new ObstacleArea(1512, 1558, 3618, 3642, 0, 42209),
                                 new ObstacleArea(1553, 1555, 3631, 3634, 3, 42211),
                                 new ObstacleArea(1538, 1542, 3630, 3635, 2, 42212),
                                 new ObstacleArea(1527, 1529, 3632, 3634, 2, 42217),
