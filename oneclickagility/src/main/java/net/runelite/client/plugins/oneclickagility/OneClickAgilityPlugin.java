@@ -125,7 +125,7 @@ public class OneClickAgilityPlugin extends Plugin
         if(event.getMenuOption().equals("<col=00ff00>One Click Agility"))
         {
             handleClick(event);
-            log.info(event.getMenuOption()+ ", "
+            log.debug(event.getMenuOption()+ ", "
                     + event.getMenuTarget() + ", "
                     + event.getId() + ", "
                     + event.getMenuAction().name() + ", "
