@@ -15,15 +15,15 @@ import net.runelite.api.coords.WorldPoint;
 @Slf4j
 public class ObstacleArea
 {
-    private final int minX;
-    private final int maxX;
-    private final int minY;
-    private final int maxY;
-    private final int z;
+    protected final int minX;
+    protected final int maxX;
+    protected final int minY;
+    protected final int maxY;
+    protected final int z;
     @Getter
-    private final int nextObstacleID;
+    protected final int nextObstacleID;
     @Setter
-    private TileObject nextObstacle;
+    protected TileObject nextObstacle;
 
     ObstacleArea(int minX,int maxX, int minY, int maxY,int z, int nextObstacleID)
     {
@@ -45,7 +45,7 @@ public class ObstacleArea
         return containsObject(worldPoint.getX(),worldPoint.getY(), worldPoint.getPlane());
     }
 
-    private boolean containsObject(int x, int y, int z)
+    protected boolean containsObject(int x, int y, int z)
     {
         return x >= minX && x <= maxX && y >= minY && y <= maxY && z == this.z;
     }
@@ -66,7 +66,7 @@ public class ObstacleArea
         return null;
     }
 
-    private int getObjectParam(Locatable gameObject)
+    protected int getObjectParam(Locatable gameObject)
     {
         if (gameObject instanceof GameObject)
         {
@@ -75,7 +75,7 @@ public class ObstacleArea
         return(gameObject.getLocalLocation().getSceneX());
     }
 
-    private int getObjectParam1(Locatable gameObject)
+    protected int getObjectParam1(Locatable gameObject)
     {
         if (gameObject instanceof GameObject)
         {

@@ -167,7 +167,7 @@ public class CourseFactory
                                 new ObstacleArea(3354,3355,2833,2849,1,10865),
                                 new ObstacleArea(3354,3365,2850,2852,1,10860),
                                 new ObstacleArea(3368,3375,2845,2852,1,10868),
-                                new ObstacleArea(3370,3375,2831,2840,1,10882),
+                                new DelayedObstacleArea(3370,3375,2831,2840,1,10882),
                                 new ObstacleArea(3362,3367,2831,2832,1,10886),
                                 new ObstacleArea(3356,3359,2831,2834,1,10857),
                                 new ObstacleArea(3356,3357,2835,2838,2,10884),
