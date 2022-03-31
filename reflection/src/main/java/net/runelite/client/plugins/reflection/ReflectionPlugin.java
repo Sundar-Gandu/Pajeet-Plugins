@@ -59,6 +59,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.config.ConfigPlugin;
 import net.runelite.client.plugins.discord.DiscordPlugin;
@@ -230,8 +231,16 @@ public class ReflectionPlugin extends Plugin
                 discordService.init();
                 if (pluginManager.isPluginEnabled(plugin))
                 {
-                    pluginManager.stopPlugin(plugin);
-                    pluginManager.startPlugin(plugin);
+                    SwingUtilities.invokeLater(() -> {
+                        try
+                        {
+                            pluginManager.startPlugin(plugin);
+                            pluginManager.stopPlugin(plugin);
+                        } catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    });
                 }
             } catch (Exception e)
             {

@@ -1,4 +1,4 @@
-version = "1.0.6"
+version = "1.0.7"
 
 project.extra["PluginName"] = "reflection"
 project.extra["PluginDescription"] = "Change the apearance of the client ui"
