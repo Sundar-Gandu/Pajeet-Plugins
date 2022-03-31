@@ -37,7 +37,7 @@ public interface OneClickAgilityConfig extends Config
             position = 2,
             keyName = "skillBoost",
             name = "Boost Agility",
-            description = "Eat summer pies to boost your agility level"
+            description = "Consume summer pies or agility potions to boost your agility level"
     )
     default boolean skillBoost()
     {
@@ -52,7 +52,7 @@ public interface OneClickAgilityConfig extends Config
             position = 3,
             keyName = "boostAmount",
             name = "Minimum boost",
-            description = "",
+            description = "If this is 3 or below, the plugin will use agility potions along with summer pies",
             hidden = true,
             unhide = "skillBoost"
     )
@@ -63,11 +63,11 @@ public interface OneClickAgilityConfig extends Config
 
     @ConfigItem(
             position = 4,
-            keyName = "consumeMisclicks",
-            name = "Stop Misclicks",
-            description = "Allows you to spam left click"
+            keyName = "useStam",
+            name = "Drink Stamina Potions",
+            description = "Uses stamina potions whenever they run out"
     )
-    default boolean consumeMisclicks()
+    default boolean useStam()
     {
         return true;
     }
@@ -79,6 +79,17 @@ public interface OneClickAgilityConfig extends Config
             description = "Pick up Marks of Grace"
     )
     default boolean pickUpMarks()
+    {
+        return true;
+    }
+
+    @ConfigItem(
+            position = 6,
+            keyName = "consumeMisclicks",
+            name = "Stop Misclicks",
+            description = "Allows you to spam left click"
+    )
+    default boolean consumeMisclicks()
     {
         return true;
     }

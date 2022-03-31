@@ -6,6 +6,7 @@ import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import static net.runelite.api.ItemID.*;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Skill;
@@ -44,6 +45,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -84,17 +87,19 @@ public class OneClickAgilityPlugin extends Plugin
     private static final int MARK_ID = 11849;
     private static final int HIGH_ALCH_GRAPHIC = 113;
     private static final Set<Integer> PORTAL_IDS = Set.of(36241,36242,36243,36244,36245,36246);
-    private static final Set<Integer> SUMMER_PIE_ID = Set.of(7220,7218);
+    private static final Set<Integer> SUMMER_PIE_ID = Set.of(SUMMER_PIE,HALF_A_SUMMER_PIE);
+    private static final Set<Integer> STAMINA_POTIONS = Set.of(STAMINA_POTION1, STAMINA_POTION2, STAMINA_POTION3, STAMINA_POTION4, STAMINA_MIX1, STAMINA_MIX2);
+    private static final Set<Integer> AGILITY_POTIONS = Set.of(AGILITY_POTION1, AGILITY_POTION2, AGILITY_POTION3, AGILITY_POTION4, AGILITY_MIX1, AGILITY_MIX2);
     private static final WorldPoint SEERS_END = new WorldPoint(2704,3464,0);
     private static final WorldPoint PYRAMID_TOP_RIGHT = new WorldPoint(3043,4697,3);
     private static final WorldPoint PYRAMID_TOP_LEFT = new WorldPoint(3042,4697,3);
 
-    ArrayList<Tile> marks = new ArrayList<>();
-    ArrayList<GameObject> portals = new ArrayList<>();
-    DecorativeObject pyramidTopObstacle;
-    GameObject pyramidTop;
-    Course course;
-    boolean hasAlched;
+    private final ArrayList<Tile> marks = new ArrayList<>();
+    private final ArrayList<GameObject> portals = new ArrayList<>();
+    private DecorativeObject pyramidTopObstacle;
+    private GameObject pyramidTop;
+    private Course course;
+    private boolean hasAlched;
 
     @Override
     protected void startUp()
@@ -299,33 +304,25 @@ public class OneClickAgilityPlugin extends Plugin
 
     private void handleClick(MenuOptionClicked event)
     {
-        if(config.skillBoost())
+        if (shouldStam())
         {
-            int boost = client.getBoostedSkillLevel(Skill.AGILITY)-client.getRealSkillLevel(Skill.AGILITY);
-            if(config.boostAmount()>boost)
-            {
-                WidgetItem food = getWidgetItem(SUMMER_PIE_ID);
-                if (food != null)
-                {
-                    event.setMenuEntry(createSummerPieMenuEntry(food));
-                    return;
-                }
-            }
+            event.setMenuEntry(createEatMenuEntry(getWidgetItem(STAMINA_POTIONS)));
+            return;
         }
 
-        if(config.seersTele()
-                && config.courseSelection() == AgilityCourse.SEERS_VILLAGE
-                && client.getVarbitValue(4070) == 0 //spellbook varbit
-                && client.getLocalPlayer().getWorldLocation().equals(SEERS_END) //worldpoint of dropdown tile
-                && client.getLocalPlayer().getAnimation() != 714) //teleportation animation ID
+        if(shouldBoost())
+        {
+            event.setMenuEntry(createEatMenuEntry(getBoostItem()));
+            return;
+        }
+
+        if(shouldSeersTele())
         {
             event.setMenuEntry(createSeersTeleportMenuEntry());
             return;
         }
 
-        if(config.courseSelection() == AgilityCourse.AGILITY_PYRAMID
-                && (client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_RIGHT) || client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_LEFT))
-                && pyramidTop.getRenderable().getModelHeight() == 309)
+        if(atPyramidTop())
         {
             event.setMenuEntry(createPyramidTopMenuEntry());
             return;
@@ -402,7 +399,6 @@ public class OneClickAgilityPlugin extends Plugin
         List<TileItem> items = tile.getGroundItems();
         if (items == null)
         {
-            log.info("no item found");
             return false;
         }
 
@@ -414,11 +410,10 @@ public class OneClickAgilityPlugin extends Plugin
             if(item.getId() == MARK_ID)
                 return true;
         }
-        log.info("no matching item found");
         return false;
     }
 
-    public WidgetItem getWidgetItem(Collection<Integer> ids) {
+    private WidgetItem getWidgetItem(Collection<Integer> ids) {
         Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
         if (inventoryWidget != null) {
             Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
@@ -438,6 +433,46 @@ public class OneClickAgilityPlugin extends Plugin
         return (client.getLocalPlayer().isMoving()
                 || client.getLocalPlayer().getPoseAnimation() != client.getLocalPlayer().getIdlePoseAnimation()
                 || client.getLocalPlayer().getAnimation() != -1);
+    }
+
+    private boolean shouldStam()
+    {
+        return config.useStam()
+                && client.getVarbitValue(25) == 0
+                && client.getEnergy() < 80
+                && getWidgetItem(STAMINA_POTIONS) != null;
+    }
+
+    private boolean shouldBoost()
+    {
+        return config.skillBoost()
+                && client.getBoostedSkillLevel(Skill.AGILITY)-client.getRealSkillLevel(Skill.AGILITY) < config.boostAmount()
+                && getBoostItem() != null;
+    }
+
+    private boolean shouldSeersTele()
+    {
+        return config.seersTele()
+                && config.courseSelection() == AgilityCourse.SEERS_VILLAGE
+                && client.getVarbitValue(4070) == 0                         //spellbook varbit
+                && client.getLocalPlayer().getWorldLocation().equals(SEERS_END)    //worldpoint of dropdown tile
+                && client.getLocalPlayer().getAnimation() != 714;                  //teleportation animation ID
+    }
+
+    private boolean atPyramidTop()
+    {
+        return config.courseSelection() == AgilityCourse.AGILITY_PYRAMID
+                && (client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_RIGHT) || client.getLocalPlayer().getWorldLocation().equals(PYRAMID_TOP_LEFT))
+                && pyramidTop.getRenderable().getModelHeight() == 309;
+    }
+
+    private WidgetItem getBoostItem()
+    {
+        Set<Integer> items = new HashSet<>();
+        items.addAll(SUMMER_PIE_ID);
+        if (config.boostAmount() <= 3)
+            items.addAll(AGILITY_POTIONS);
+        return getWidgetItem(items);
     }
 
     private void walkTile(int x, int y)
@@ -461,7 +496,7 @@ public class OneClickAgilityPlugin extends Plugin
                 true);
     }
 
-    private MenuEntry createSummerPieMenuEntry(WidgetItem food)
+    private MenuEntry createEatMenuEntry(WidgetItem food)
     {
         String[] foodMenuOptions = itemManager.getItemComposition(food.getId()).getInventoryActions();
         return client.createMenuEntry(
