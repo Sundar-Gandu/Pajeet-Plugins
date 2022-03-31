@@ -3,6 +3,7 @@ package net.runelite.client.plugins.oneclick3tfish;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
+import static net.runelite.api.ItemID.*;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -71,13 +72,13 @@ public class OneClick3TFishPlugin extends Plugin
    int tick;
    boolean cooldown;
    boolean drop;
-   Set<Integer> fishID = Set.of(11328,11330,11332,331,335);
-   Set<Integer> herbID = Set.of(249,251,253);
-   Set<Integer> tarID = Set.of(1939);
-   Set<Integer> logID = Set.of(6332,6333);
-   Set<Integer> knifeID = Set.of(946);
-   Set<Integer> vambID = Set.of(1063,1065,2487,2489,2491);
-   Set<Integer> clawID = Set.of(10113);
+   Set<Integer> fishID = Set.of(LEAPING_TROUT,LEAPING_SALMON,LEAPING_STURGEON,RAW_SALMON,RAW_TROUT);
+   Set<Integer> herbID = Set.of(GUAM_LEAF,MARRENTILL,TARROMIN,HARRALANDER);
+   Set<Integer> tarID = Set.of(SWAMP_TAR);
+   Set<Integer> logID = Set.of(MAHOGANY_LOGS,TEAK_LOGS);
+   Set<Integer> knifeID = Set.of(KNIFE);
+   Set<Integer> vambID = Set.of(LEATHER_VAMBRACES,GREEN_DHIDE_VAMBRACES,BLUE_DHIDE_VAMBRACES,RED_DHIDE_VAMBRACES,BLACK_DHIDE_VAMBRACES);
+   Set<Integer> clawID = Set.of(KEBBIT_CLAWS);
 
 
    @Subscribe
