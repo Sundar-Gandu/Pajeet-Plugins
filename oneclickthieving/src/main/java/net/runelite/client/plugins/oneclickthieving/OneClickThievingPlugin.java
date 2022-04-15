@@ -324,7 +324,7 @@ public class OneClickThievingPlugin extends Plugin
             }
          }
          //if redemption is off
-         else if(client.getVarbitValue(Varbits.PRAYER_REDEMPTION.getId()) == 0 && client.getBoostedSkillLevel(Skill.PRAYER) > 0 )
+         else if(client.getVarbitValue(Varbits.PRAYER_REDEMPTION) == 0 && client.getBoostedSkillLevel(Skill.PRAYER) > 0 )
          {
             if ((config.prayMethod() == PrayMethod.REACTIVE_PRAY && shouldPray())
                     || config.prayMethod() == PrayMethod.LAZY_PRAY)

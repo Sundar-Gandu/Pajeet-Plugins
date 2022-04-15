@@ -385,7 +385,11 @@ public class ExtendedChatPlugin extends Plugin
          output = output.substring(0, 80);
       }
 
-      output = output.substring(0, 1).toUpperCase() + output.substring(1);
+      if (output.length() > 0)
+      {
+         output = output.substring(0, 1).toUpperCase() + output.substring(1);
+      }
+
       return filtered ? output : message;
    }
 }

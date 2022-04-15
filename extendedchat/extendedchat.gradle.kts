@@ -1,4 +1,4 @@
-version = "1.0.1"
+version = "1.0.2"
 
 project.extra["PluginName"] = "Chat Extended"
 project.extra["PluginDescription"] = "Chat filtering, Ctrl+V pasting, and retype previous message"
