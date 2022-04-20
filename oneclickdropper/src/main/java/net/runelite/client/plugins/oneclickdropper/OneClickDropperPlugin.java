@@ -22,12 +22,14 @@ import net.runelite.api.Client;
 import org.pf4j.Extension;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Extension
 @PluginDescriptor(
@@ -149,7 +151,7 @@ public class OneClickDropperPlugin extends Plugin
    //has to be called on client thread
    private void createDropList()
    {
-      int size = client.getWidget(WidgetInfo.INVENTORY).getWidgetItems().size();
+      int size = nonemptyInventorySlots();
       if (size == 28)
       {
          updateDropList();
@@ -192,6 +194,17 @@ public class OneClickDropperPlugin extends Plugin
          return matchedItems;
       }
       return null;
+   }
+
+   private int nonemptyInventorySlots()
+   {
+      Widget inventory = client.getWidget(WidgetInfo.INVENTORY.getId());
+      if (inventory == null)
+      {
+         return 28;
+      }
+
+      return (int) Arrays.stream(inventory.getDynamicChildren()).filter(w -> w.getItemId() != 6512).count();
    }
 
 
