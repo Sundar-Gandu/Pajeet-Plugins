@@ -14,7 +14,6 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -166,7 +165,7 @@ public class OneClick3TFishPlugin extends Plugin
             //tick manip
             if(drop && config.dropFish())
             {
-               WidgetItem dropItem= getWidgetItem(fishID);
+               Widget dropItem = getWidgetItem(fishID);
                if (dropItem != null)
                {
                   event.setMenuEntry(createDropMenuEntry(dropItem));
@@ -180,7 +179,7 @@ public class OneClick3TFishPlugin extends Plugin
             else
             {
                tickManip(event);
-               WidgetItem dropItem= getWidgetItem(fishID);
+               Widget dropItem = getWidgetItem(fishID);
                if (dropItem != null)
                {
                   drop = true;
@@ -197,8 +196,8 @@ public class OneClick3TFishPlugin extends Plugin
 
    private void tickManip(MenuOptionClicked event)
    {
-      WidgetItem highlightedItem;
-      WidgetItem usedItem;
+      Widget highlightedItem;
+      Widget usedItem;
       Collection<Integer> highlightedItemID;
       Collection<Integer> usedItemID;
 
@@ -237,9 +236,9 @@ public class OneClick3TFishPlugin extends Plugin
       event.setMenuEntry(client.createMenuEntry("Use",
               "Item -> Item",
               usedItem.getId(),
-              MenuAction.ITEM_USE_ON_WIDGET_ITEM.getId(),
+              MenuAction.ITEM_USE_ON_ITEM.getId(),
               usedItem.getIndex(),
-              9764864,
+              WidgetInfo.INVENTORY.getId(),
               false));
    }
 
@@ -253,11 +252,11 @@ public class OneClick3TFishPlugin extends Plugin
          tick++;
    }
 
-   public WidgetItem getWidgetItem(Collection<Integer> ids) {
+   public Widget getWidgetItem(Collection<Integer> ids) {
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      if (inventoryWidget != null) {
-         Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
-         for (WidgetItem item : items) {
+      if (inventoryWidget != null && inventoryWidget.getChildren() != null) {
+         Widget[] items = inventoryWidget.getChildren();
+         for (Widget item : items) {
             if (ids.contains(item.getId())) {
                return item;
             }
@@ -266,7 +265,7 @@ public class OneClick3TFishPlugin extends Plugin
       return null;
    }
 
-   private MenuEntry createDropMenuEntry(WidgetItem item)
+   private MenuEntry createDropMenuEntry(Widget item)
    {
       return client.createMenuEntry(
               "Drop",
@@ -274,7 +273,7 @@ public class OneClick3TFishPlugin extends Plugin
               item.getId(),
               MenuAction.ITEM_FIFTH_OPTION.getId(),
               item.getIndex(),
-              9764864,
+              WidgetInfo.INVENTORY.getId(),
               false);
    }
 

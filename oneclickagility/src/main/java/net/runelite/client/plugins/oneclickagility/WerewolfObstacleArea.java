@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.oneclickagility;
 
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -8,7 +9,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -37,7 +37,7 @@ public class WerewolfObstacleArea extends ObstacleArea
                     9866,
                     false);
         }
-        else if (getWidgetItem(Collections.singletonList(4179),client) != null && werewolf != null)
+        else if (getWidgetItem(Collections.singletonList(ItemID.STICK),client) != null && werewolf != null)
             return client.createMenuEntry("Give-Stick",
                     "Agility Trainer",
                     werewolf.getIndex(),
@@ -57,11 +57,11 @@ public class WerewolfObstacleArea extends ObstacleArea
     }
 
 
-    public WidgetItem getWidgetItem(Collection<Integer> ids,Client client) {
+    public Widget getWidgetItem(Collection<Integer> ids,Client client) {
         Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-        if (inventoryWidget != null) {
-            Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
-            for (WidgetItem item : items) {
+        if (inventoryWidget != null && inventoryWidget.getChildren() != null) {
+            Widget[] items = inventoryWidget.getChildren();
+            for (Widget item : items) {
                 if (ids.contains(item.getId())) {
                     return item;
                 }

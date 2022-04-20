@@ -9,7 +9,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
@@ -22,7 +21,6 @@ import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.util.Text;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -40,7 +38,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -222,11 +219,11 @@ public class OneClickThievingPlugin extends Plugin
          return;
       }
 
-      WidgetItem coinpouch = getWidgetItem(coinPouches);
+      Widget coinpouch = getWidgetItem(coinPouches);
 
       if(config.enableHeal() && shouldHeal)
       {
-         WidgetItem food = getItemMenu(foodMenuOption,foodBlacklist);
+         Widget food = getItemMenu(foodMenuOption, foodBlacklist);
          if (config.haltOnLowFood() && food == null)
          {
             event.consume();
@@ -250,7 +247,7 @@ public class OneClickThievingPlugin extends Plugin
          //else fallthrough
       }
 
-      if (config.enableCoinPouch() && coinpouch != null && coinpouch.getQuantity() == 28)
+      if (config.enableCoinPouch() && coinpouch != null && coinpouch.getItemQuantity() == 28)
       {
          event.setMenuEntry(client.createMenuEntry(
                  "Open-all",
@@ -304,7 +301,7 @@ public class OneClickThievingPlugin extends Plugin
       {
          if (client.getBoostedSkillLevel(Skill.PRAYER) == 0 && prayerTimeOut == 0)
          {
-            WidgetItem prayerPotion = getWidgetItem(prayerPotionIDs);
+            Widget prayerPotion = getWidgetItem(prayerPotionIDs);
             if (prayerPotion != null)
             {
                event.setMenuEntry(client.createMenuEntry(
@@ -362,11 +359,11 @@ public class OneClickThievingPlugin extends Plugin
       return false;
    }
 
-   public WidgetItem getWidgetItem(Collection<Integer> ids) {
+   public Widget getWidgetItem(Collection<Integer> ids) {
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      if (inventoryWidget != null) {
-         Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
-         for (WidgetItem item : items) {
+      if (inventoryWidget != null && inventoryWidget.getChildren() != null) {
+         Widget[] items = inventoryWidget.getChildren();
+         for (Widget item : items) {
             if (ids.contains(item.getId())) {
                return item;
             }
@@ -375,15 +372,15 @@ public class OneClickThievingPlugin extends Plugin
       return null;
    }
 
-   private WidgetItem getWidgetItem(int id) {
+   private Widget getWidgetItem(int id) {
       return getWidgetItem(Collections.singletonList(id));
    }
 
-   private WidgetItem getItemMenu(Collection<String>menuOptions, Collection<Integer> ignoreIDs) {
+   private Widget getItemMenu(Collection<String>menuOptions, Collection<Integer> ignoreIDs) {
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      if (inventoryWidget != null) {
-         Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
-         for (WidgetItem item : items) {
+      if (inventoryWidget != null && inventoryWidget.getChildren() != null) {
+         Widget[] items = inventoryWidget.getChildren();
+         for (Widget item : items) {
             if (ignoreIDs.contains(item.getId())) {
                continue;
             }

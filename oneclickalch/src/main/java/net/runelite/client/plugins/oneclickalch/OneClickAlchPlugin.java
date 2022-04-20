@@ -1,17 +1,13 @@
 package net.runelite.client.plugins.oneclickalch;
 
 import com.google.inject.Provides;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameState;
-import net.runelite.api.GraphicID;
 import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -19,7 +15,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.api.Client;
 import org.pf4j.Extension;
 import javax.inject.Inject;
-import java.util.Collection;
 
 @Extension
 @PluginDescriptor(
@@ -89,7 +84,7 @@ public class OneClickAlchPlugin extends Plugin
       if(!event.getMenuOption().equals("One Click Alch"))
          return;
 
-      WidgetItem item = getWidgetItem(config.itemID());
+      Widget item = getWidgetItem(config.itemID());
 
       if (item == null)
          return;
@@ -99,25 +94,25 @@ public class OneClickAlchPlugin extends Plugin
       event.setMenuOption("Cast");
       event.setMenuTarget("High Level Alchemy -> Item");
       event.setId(item.getId());
-      event.setMenuAction(MenuAction.ITEM_USE_ON_WIDGET);
+      event.setMenuAction(MenuAction.WIDGET_TARGET_ON_WIDGET);
       event.setParam0(item.getIndex());
       event.setParam1(WidgetInfo.INVENTORY.getId());
       cooldown = 5;
    }
 
-   private void setSelectSpell(WidgetInfo info)
+   private void setSelectSpell(WidgetInfo widget)
    {
-      final Widget widget = client.getWidget(info);
-      client.setSelectedSpellName("<col=00ff00>" + widget.getName() + "</col>");
-      client.setSelectedSpellWidget(widget.getId());
+      final Widget spell = client.getWidget(widget);
+      client.setSelectedSpellName("<col=00ff00>" + spell.getName() + "</col>");
+      client.setSelectedSpellWidget(spell.getId());
       client.setSelectedSpellChildIndex(-1);
    }
 
-   public WidgetItem getWidgetItem(int id) {
+   public Widget getWidgetItem(int id) {
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      if (inventoryWidget != null) {
-         Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
-         for (WidgetItem item : items) {
+      if (inventoryWidget != null && inventoryWidget.getChildren() != null) {
+         Widget[] items = inventoryWidget.getChildren();
+         for (Widget item : items) {
             if (id == item.getId()) {
                return item;
             }

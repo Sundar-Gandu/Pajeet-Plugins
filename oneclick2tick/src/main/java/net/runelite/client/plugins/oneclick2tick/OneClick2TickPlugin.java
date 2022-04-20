@@ -2,6 +2,7 @@ package net.runelite.client.plugins.oneclick2tick;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.GameTick;
@@ -10,7 +11,6 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -60,7 +60,14 @@ public class OneClick2TickPlugin extends Plugin
 
    int tick;
    boolean cooldown;
-   Set<Integer> dropIDs = Set.of(359,371,383,6333);
+   Set<Integer> dropIDs = Set.of(
+           ItemID.RAW_TUNA,
+           ItemID.TUNA,
+           ItemID.RAW_SWORDFISH,
+           ItemID.SWORDFISH,
+           ItemID.RAW_SHARK,
+           ItemID.SHARK,
+           ItemID.TEAK_LOGS);
 
    @Subscribe
    private void onGameTick(GameTick event)
@@ -111,7 +118,7 @@ public class OneClick2TickPlugin extends Plugin
       }
       else if (tick == 2)
       {
-         WidgetItem itemToDrop = getWidgetItem(dropIDs);
+         Widget itemToDrop = getWidgetItem(dropIDs);
          if (itemToDrop != null && config.dropItems())
          {
             event.setMenuEntry(createDropMenuEntry(itemToDrop));
@@ -129,11 +136,11 @@ public class OneClick2TickPlugin extends Plugin
       }
    }
 
-   public WidgetItem getWidgetItem(Collection<Integer> ids) {
+   public Widget getWidgetItem(Collection<Integer> ids) {
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      if (inventoryWidget != null) {
-         Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
-         for (WidgetItem item : items) {
+      if (inventoryWidget != null && inventoryWidget.getChildren() != null) {
+         Widget[] items = inventoryWidget.getChildren();
+         for (Widget item : items) {
             if (ids.contains(item.getId())) {
                return item;
             }
@@ -150,14 +157,14 @@ public class OneClick2TickPlugin extends Plugin
       rsClient.setCheckClick(false);
    }
 
-   private MenuEntry createDropMenuEntry(WidgetItem item)
+   private MenuEntry createDropMenuEntry(Widget item)
    {
       return client.createMenuEntry("Drop",
               "Item",
               item.getId(),
               MenuAction.ITEM_FIFTH_OPTION.getId(),
               item.getIndex(),
-              9764864,
+              WidgetInfo.INVENTORY.getId(),
               false);
    }
 }

@@ -12,7 +12,6 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.util.Text;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -62,8 +61,8 @@ public class OneClickDropperPlugin extends Plugin
 
    boolean dropping = false;
    int previousSize = 0;
-   List<WidgetItem> dropList;
-   ListIterator<WidgetItem> dropListIterator;
+   List<Widget> dropList;
+   ListIterator<Widget> dropListIterator;
 
    Set<Integer> dropIDs = Set.of(19669,11328,11332,11330);
    HashMap<Integer,Integer> dropOrder;
@@ -174,17 +173,17 @@ public class OneClickDropperPlugin extends Plugin
       dropping = true;
    }
 
-   public List<WidgetItem> getItems(Collection<Integer> ids)
+   public List<Widget> getItems(Collection<Integer> ids)
    {
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      List<WidgetItem> matchedItems = new ArrayList<>();
+      List<Widget> matchedItems = new ArrayList<>();
 
-      if (inventoryWidget != null)
+      if (inventoryWidget != null && inventoryWidget.getChildren() != null)
       {
          for(int i = 0; i <= 27; i++)
          {
             int index = config.customDrop() ? dropOrder.get(i) : i;
-            WidgetItem item = inventoryWidget.getWidgetItem(index);
+            Widget item = inventoryWidget.getChild(index);
             if (item != null && ids.contains(item.getId()))
             {
                matchedItems.add(item);
@@ -196,7 +195,7 @@ public class OneClickDropperPlugin extends Plugin
    }
 
 
-   private MenuEntry createDropMenuEntry(WidgetItem item)
+   private MenuEntry createDropMenuEntry(Widget item)
    {
       return client.createMenuEntry(
               "Drop",
@@ -218,9 +217,8 @@ public class OneClickDropperPlugin extends Plugin
          {
             dropIDs.add(Integer.parseInt(s));
          }
-         catch (NumberFormatException ignored)
-         {
-         }
+         //catches the error from Integer.parseInt()
+         catch (NumberFormatException ignored) {}
       }
 
       int order = 0;
@@ -240,10 +238,8 @@ public class OneClickDropperPlugin extends Plugin
             dropOrder.put(order,inventoryIndex);
             order++;
          }
-         catch (Exception ignored)
-         {
-            //catches the error from Integer.parseInt()
-         }
+         //catches the error from Integer.parseInt()
+         catch (NumberFormatException ignored) {}
       }
    }
 }

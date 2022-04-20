@@ -30,7 +30,6 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
@@ -45,7 +44,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -413,11 +411,11 @@ public class OneClickAgilityPlugin extends Plugin
         return false;
     }
 
-    private WidgetItem getWidgetItem(Collection<Integer> ids) {
+    private Widget getWidgetItem(Collection<Integer> ids) {
         Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-        if (inventoryWidget != null) {
-            Collection<WidgetItem> items = inventoryWidget.getWidgetItems();
-            for (WidgetItem item : items) {
+        if (inventoryWidget != null && inventoryWidget.getChildren() != null) {
+            Widget[] items = inventoryWidget.getChildren();
+            for (Widget item : items) {
                 if (ids.contains(item.getId())) {
                     return item;
                 }
@@ -466,7 +464,7 @@ public class OneClickAgilityPlugin extends Plugin
                 && pyramidTop.getRenderable().getModelHeight() == 309;
     }
 
-    private WidgetItem getBoostItem()
+    private Widget getBoostItem()
     {
         Set<Integer> items = new HashSet<>();
         items.addAll(SUMMER_PIE_ID);
@@ -496,12 +494,11 @@ public class OneClickAgilityPlugin extends Plugin
                 true);
     }
 
-    private MenuEntry createEatMenuEntry(WidgetItem food)
+    private MenuEntry createEatMenuEntry(Widget food)
     {
-        String[] foodMenuOptions = itemManager.getItemComposition(food.getId()).getInventoryActions();
         return client.createMenuEntry(
-                foodMenuOptions[0],
-                foodMenuOptions[0],
+                "Consume",
+                "Food",
                 food.getId(),
                 MenuAction.ITEM_FIRST_OPTION.getId(),
                 food.getIndex(),
