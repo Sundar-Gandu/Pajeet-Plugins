@@ -19,7 +19,9 @@ import net.runelite.api.Client;
 import net.runelite.rs.api.RSClient;
 import org.pf4j.Extension;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Extension
@@ -118,10 +120,10 @@ public class OneClick2TickPlugin extends Plugin
       }
       else if (tick == 2)
       {
-         Widget itemToDrop = getWidgetItem(dropIDs);
+         Widget itemToDrop = getItem(dropIDs);
          if (itemToDrop != null && config.dropItems())
          {
-            event.setMenuEntry(createDropMenuEntry(itemToDrop));
+            setEntry(event,itemEntry(itemToDrop,7));
          }
          else if (event.getMenuTarget().contains("Teak"))
          {
@@ -136,17 +138,29 @@ public class OneClick2TickPlugin extends Plugin
       }
    }
 
-   public Widget getWidgetItem(Collection<Integer> ids) {
+   public Widget getItem(Collection<Integer> ids) {
+      List<Widget> matches = getItems(ids);
+      return matches.size() != 0 ? matches.get(0) : null;
+   }
+
+   public ArrayList<Widget> getItems(Collection<Integer> ids)
+   {
+      client.runScript(6009, 9764864, 28, 1, -1);
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      if (inventoryWidget != null && inventoryWidget.getChildren() != null) {
-         Widget[] items = inventoryWidget.getChildren();
-         for (Widget item : items) {
-            if (ids.contains(item.getId())) {
-               return item;
+      ArrayList<Widget> matchedItems = new ArrayList<>();
+
+      if (inventoryWidget != null && inventoryWidget.getDynamicChildren() != null)
+      {
+         Widget[] items = inventoryWidget.getDynamicChildren();
+         for(Widget item : items)
+         {
+            if (ids.contains(item.getItemId()))
+            {
+               matchedItems.add(item);
             }
          }
       }
-      return null;
+      return matchedItems;
    }
 
    private void walkTile(int x, int y) {
@@ -157,14 +171,36 @@ public class OneClick2TickPlugin extends Plugin
       rsClient.setCheckClick(false);
    }
 
-   private MenuEntry createDropMenuEntry(Widget item)
+   public void setEntry(MenuOptionClicked event, MenuEntry entry)
    {
-      return client.createMenuEntry("Drop",
-              "Item",
-              item.getId(),
-              MenuAction.ITEM_FIFTH_OPTION.getId(),
+      try
+      {
+         event.setMenuOption(entry.getOption());
+         event.setMenuTarget(entry.getTarget());
+         event.setId(entry.getIdentifier());
+         event.setMenuAction(entry.getType());
+         event.setParam0(entry.getParam0());
+         event.setParam1(entry.getParam1());
+      }
+      catch (Exception e)
+      {
+         event.consume();
+      }
+   }
+
+   public MenuEntry itemEntry(Widget item, int action)
+   {
+      if (item == null)
+         return null;
+
+      return client.createMenuEntry(
+              "",
+              "",
+              action,
+              action < 6 ? MenuAction.CC_OP.getId() : MenuAction.CC_OP_LOW_PRIORITY.getId(),
               item.getIndex(),
               WidgetInfo.INVENTORY.getId(),
-              false);
+              false
+      );
    }
 }

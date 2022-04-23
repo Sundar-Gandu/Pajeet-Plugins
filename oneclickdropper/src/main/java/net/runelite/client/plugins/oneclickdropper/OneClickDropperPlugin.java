@@ -104,7 +104,7 @@ public class OneClickDropperPlugin extends Plugin
       {
          if(dropListIterator.hasNext())
          {
-            event.setMenuEntry(createDropMenuEntry(dropListIterator.next()));
+            setEntry(event, itemEntry(dropListIterator.next(), 7));
          }
          if(!dropListIterator.hasNext())
          {
@@ -177,6 +177,7 @@ public class OneClickDropperPlugin extends Plugin
 
    public List<Widget> getItems(Collection<Integer> ids)
    {
+      client.runScript(6009, 9764864, 28, 1, -1);
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
       List<Widget> matchedItems = new ArrayList<>();
 
@@ -186,7 +187,7 @@ public class OneClickDropperPlugin extends Plugin
          {
             int index = config.customDrop() ? dropOrder.get(i) : i;
             Widget item = inventoryWidget.getChild(index);
-            if (item != null && ids.contains(item.getId()))
+            if (item != null && ids.contains(item.getItemId()))
             {
                matchedItems.add(item);
             }
@@ -205,19 +206,6 @@ public class OneClickDropperPlugin extends Plugin
       }
 
       return (int) Arrays.stream(inventory.getDynamicChildren()).filter(w -> w.getItemId() != 6512).count();
-   }
-
-
-   private MenuEntry createDropMenuEntry(Widget item)
-   {
-      return client.createMenuEntry(
-              "Drop",
-              "Item",
-              item.getId(),
-              MenuAction.ITEM_FIFTH_OPTION.getId(),
-              item.getIndex(),
-              WidgetInfo.INVENTORY.getId(),
-              false);
    }
 
    private void parseConfig()
@@ -253,6 +241,39 @@ public class OneClickDropperPlugin extends Plugin
          }
          //catches the error from Integer.parseInt()
          catch (NumberFormatException ignored) {}
+      }
+   }
+
+   public MenuEntry itemEntry(Widget item, int action)
+   {
+      if (item == null)
+         return null;
+
+      return client.createMenuEntry(
+              "",
+              "",
+              action,
+              action < 6 ? MenuAction.CC_OP.getId() : MenuAction.CC_OP_LOW_PRIORITY.getId(),
+              item.getIndex(),
+              WidgetInfo.INVENTORY.getId(),
+              false
+      );
+   }
+
+   public void setEntry(MenuOptionClicked event, MenuEntry entry)
+   {
+      try
+      {
+         event.setMenuOption(entry.getOption());
+         event.setMenuTarget(entry.getTarget());
+         event.setId(entry.getIdentifier());
+         event.setMenuAction(entry.getType());
+         event.setParam0(entry.getParam0());
+         event.setParam1(entry.getParam1());
+      }
+      catch (Exception e)
+      {
+         event.consume();
       }
    }
 }

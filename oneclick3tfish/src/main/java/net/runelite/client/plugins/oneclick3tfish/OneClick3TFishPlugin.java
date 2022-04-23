@@ -25,7 +25,9 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.api.Client;
 import org.pf4j.Extension;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Extension
@@ -127,7 +129,7 @@ public class OneClick3TFishPlugin extends Plugin
                  .nearestTo(client.getLocalPlayer());
          if (fishingSpot != null)
          {
-            event.setMenuEntry(createFishMenuEntry(fishingSpot));
+            setEntry(event, createFishMenuEntry(fishingSpot));
          }
          else
          {
@@ -165,10 +167,10 @@ public class OneClick3TFishPlugin extends Plugin
             //tick manip
             if(drop && config.dropFish())
             {
-               Widget dropItem = getWidgetItem(fishID);
+               Widget dropItem = getItem(fishID);
                if (dropItem != null)
                {
-                  event.setMenuEntry(createDropMenuEntry(dropItem));
+                  setEntry(event, itemEntry(dropItem, 7));
                }
                else
                {
@@ -179,7 +181,7 @@ public class OneClick3TFishPlugin extends Plugin
             else
             {
                tickManip(event);
-               Widget dropItem = getWidgetItem(fishID);
+               Widget dropItem = getItem(fishID);
                if (dropItem != null)
                {
                   drop = true;
@@ -219,8 +221,8 @@ public class OneClick3TFishPlugin extends Plugin
             throw new IllegalStateException("Unexpected value: " + config.manipType());
       }
 
-      highlightedItem = getWidgetItem(highlightedItemID);
-      usedItem = getWidgetItem(usedItemID);
+      highlightedItem = getItem(highlightedItemID);
+      usedItem = getItem(usedItemID);
 
       if(highlightedItem == null || usedItem == null)
       {
@@ -229,14 +231,14 @@ public class OneClick3TFishPlugin extends Plugin
          return;
       }
 
-      client.setSelectedItemWidget(WidgetInfo.INVENTORY.getId());
-      client.setSelectedItemSlot(highlightedItem.getIndex());
-      client.setSelectedItemID(highlightedItem.getId());
+      client.setSelectedSpellWidget(highlightedItem.getId());
+      client.setSelectedSpellChildIndex(highlightedItem.getIndex());
+      client.setSelectedSpellItemId(highlightedItem.getItemId());
 
-      event.setMenuEntry(client.createMenuEntry("Use",
+      setEntry(event, client.createMenuEntry("Use",
               "Item -> Item",
-              usedItem.getId(),
-              MenuAction.ITEM_USE_ON_ITEM.getId(),
+              0,
+              MenuAction.WIDGET_TARGET_ON_WIDGET.getId(),
               usedItem.getIndex(),
               WidgetInfo.INVENTORY.getId(),
               false));
@@ -252,29 +254,62 @@ public class OneClick3TFishPlugin extends Plugin
          tick++;
    }
 
-   public Widget getWidgetItem(Collection<Integer> ids) {
+   public Widget getItem(Collection<Integer> ids) {
+      List<Widget> matches = getItems(ids);
+      return matches.size() != 0 ? matches.get(0) : null;
+   }
+
+   public ArrayList<Widget> getItems(Collection<Integer> ids)
+   {
+      client.runScript(6009, 9764864, 28, 1, -1);
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      if (inventoryWidget != null && inventoryWidget.getChildren() != null) {
-         Widget[] items = inventoryWidget.getChildren();
-         for (Widget item : items) {
-            if (ids.contains(item.getId())) {
-               return item;
+      ArrayList<Widget> matchedItems = new ArrayList<>();
+
+      if (inventoryWidget != null && inventoryWidget.getDynamicChildren() != null)
+      {
+         Widget[] items = inventoryWidget.getDynamicChildren();
+         for(Widget item : items)
+         {
+            if (ids.contains(item.getItemId()))
+            {
+               matchedItems.add(item);
             }
          }
       }
-      return null;
+      return matchedItems;
    }
 
-   private MenuEntry createDropMenuEntry(Widget item)
+   public MenuEntry itemEntry(Widget item, int action)
    {
+      if (item == null)
+         return null;
+
       return client.createMenuEntry(
-              "Drop",
-              "Item",
-              item.getId(),
-              MenuAction.ITEM_FIFTH_OPTION.getId(),
+              "",
+              "",
+              action,
+              action < 6 ? MenuAction.CC_OP.getId() : MenuAction.CC_OP_LOW_PRIORITY.getId(),
               item.getIndex(),
               WidgetInfo.INVENTORY.getId(),
-              false);
+              false
+      );
+   }
+
+   public void setEntry(MenuOptionClicked event, MenuEntry entry)
+   {
+      try
+      {
+         event.setMenuOption(entry.getOption());
+         event.setMenuTarget(entry.getTarget());
+         event.setId(entry.getIdentifier());
+         event.setMenuAction(entry.getType());
+         event.setParam0(entry.getParam0());
+         event.setParam1(entry.getParam1());
+      }
+      catch (Exception e)
+      {
+         event.consume();
+      }
    }
 
    private MenuEntry createFishMenuEntry(NPC fish)

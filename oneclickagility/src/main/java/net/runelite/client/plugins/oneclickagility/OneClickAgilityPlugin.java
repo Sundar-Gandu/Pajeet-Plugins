@@ -304,25 +304,25 @@ public class OneClickAgilityPlugin extends Plugin
     {
         if (shouldStam())
         {
-            event.setMenuEntry(createEatMenuEntry(getWidgetItem(STAMINA_POTIONS)));
+            setEntry(event, itemEntry(getItem(STAMINA_POTIONS), 2));
             return;
         }
 
         if(shouldBoost())
         {
-            event.setMenuEntry(createEatMenuEntry(getBoostItem()));
+            setEntry(event, itemEntry(getBoostItem(), 2));
             return;
         }
 
         if(shouldSeersTele())
         {
-            event.setMenuEntry(createSeersTeleportMenuEntry());
+            setEntry(event, createSeersTeleportMenuEntry());
             return;
         }
 
         if(atPyramidTop())
         {
-            event.setMenuEntry(createPyramidTopMenuEntry());
+            setEntry(event, createPyramidTopMenuEntry());
             return;
         }
 
@@ -343,7 +343,7 @@ public class OneClickAgilityPlugin extends Plugin
 
                     if (markTile != null && checkTileForMark(markTile))
                     {
-                        event.setMenuEntry(createMarkMenuEntry(mark));
+                        setEntry(event, createMarkMenuEntry(mark));
                         return;
                     }
                     else
@@ -365,7 +365,7 @@ public class OneClickAgilityPlugin extends Plugin
             {
                 if (obstacleArea.containsObject(portal) && portal.getClickbox() != null)
                 {
-                    event.setMenuEntry(createPortalMenuEntry(portal));
+                    setEntry(event, createPortalMenuEntry(portal));
                     return;
                 }
             }
@@ -377,7 +377,7 @@ public class OneClickAgilityPlugin extends Plugin
             return;
         }
 
-        event.setMenuEntry(obstacleArea.createMenuEntry(client));
+        setEntry(event, obstacleArea.createMenuEntry(client));
 
         if (hasAlched)
         {
@@ -411,19 +411,6 @@ public class OneClickAgilityPlugin extends Plugin
         return false;
     }
 
-    private Widget getWidgetItem(Collection<Integer> ids) {
-        Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-        if (inventoryWidget != null && inventoryWidget.getChildren() != null) {
-            Widget[] items = inventoryWidget.getChildren();
-            for (Widget item : items) {
-                if (ids.contains(item.getId())) {
-                    return item;
-                }
-            }
-        }
-        return null;
-    }
-
     private boolean shouldConsume()
     {
         if (!config.consumeMisclicks() || hasAlched)
@@ -438,7 +425,7 @@ public class OneClickAgilityPlugin extends Plugin
         return config.useStam()
                 && client.getVarbitValue(25) == 0
                 && client.getEnergy() < 80
-                && getWidgetItem(STAMINA_POTIONS) != null;
+                && getItem(STAMINA_POTIONS) != null;
     }
 
     private boolean shouldBoost()
@@ -470,7 +457,7 @@ public class OneClickAgilityPlugin extends Plugin
         items.addAll(SUMMER_PIE_ID);
         if (config.boostAmount() <= 3)
             items.addAll(AGILITY_POTIONS);
-        return getWidgetItem(items);
+        return getItem(items);
     }
 
     private void walkTile(int x, int y)
@@ -482,6 +469,64 @@ public class OneClickAgilityPlugin extends Plugin
         rsClient.setCheckClick(false);
     }
 
+    public Widget getItem(Collection<Integer> ids) {
+        List<Widget> matches = getItems(ids);
+        return matches.size() != 0 ? matches.get(0) : null;
+    }
+
+    public ArrayList<Widget> getItems(Collection<Integer> ids)
+    {
+        client.runScript(6009, 9764864, 28, 1, -1);
+        Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+        ArrayList<Widget> matchedItems = new ArrayList<>();
+
+        if (inventoryWidget != null && inventoryWidget.getDynamicChildren() != null)
+        {
+            Widget[] items = inventoryWidget.getDynamicChildren();
+            for(Widget item : items)
+            {
+                if (ids.contains(item.getItemId()))
+                {
+                    matchedItems.add(item);
+                }
+            }
+        }
+        return matchedItems;
+    }
+
+    public MenuEntry itemEntry(Widget item, int action)
+    {
+        if (item == null)
+            return null;
+
+        return client.createMenuEntry(
+                "",
+                "",
+                action,
+                action < 6 ? MenuAction.CC_OP.getId() : MenuAction.CC_OP_LOW_PRIORITY.getId(),
+                item.getIndex(),
+                WidgetInfo.INVENTORY.getId(),
+                false
+        );
+    }
+
+    public void setEntry(MenuOptionClicked event, MenuEntry entry)
+    {
+        try
+        {
+            event.setMenuOption(entry.getOption());
+            event.setMenuTarget(entry.getTarget());
+            event.setId(entry.getIdentifier());
+            event.setMenuAction(entry.getType());
+            event.setParam0(entry.getParam0());
+            event.setParam1(entry.getParam1());
+        }
+        catch (Exception e)
+        {
+            event.consume();
+        }
+    }
+
     private MenuEntry createSeersTeleportMenuEntry()
     {
         return client.createMenuEntry(
@@ -491,18 +536,6 @@ public class OneClickAgilityPlugin extends Plugin
                 MenuAction.CC_OP.getId(),
                 -1,
                 WidgetInfo.SPELL_CAMELOT_TELEPORT.getId(),
-                true);
-    }
-
-    private MenuEntry createEatMenuEntry(Widget food)
-    {
-        return client.createMenuEntry(
-                "Consume",
-                "Food",
-                food.getId(),
-                MenuAction.ITEM_FIRST_OPTION.getId(),
-                food.getIndex(),
-                WidgetInfo.INVENTORY.getId(),
                 true);
     }
 

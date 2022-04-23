@@ -79,14 +79,12 @@ public class OneClickRunEnablePlugin extends Plugin
    {
       if (event.getMenuOption().equals("One Click Enable Run"))
       {
-         event.setMenuEntry(client.createMenuEntry(
-                 "Toggle Run",
-                 "",
-                 1,
-                 MenuAction.CC_OP.getId(),
-                 -1,
-                 WidgetInfo.MINIMAP_TOGGLE_RUN_ORB.getId(),
-                 false));
+         event.setMenuOption("Toggle Run");
+         event.setMenuTarget("");
+         event.setId(1);
+         event.setMenuAction(MenuAction.CC_OP);
+         event.setParam0(-1);
+         event.setParam1(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB.getId());
       }
    }
 

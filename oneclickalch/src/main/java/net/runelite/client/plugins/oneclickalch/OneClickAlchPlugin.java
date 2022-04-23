@@ -15,6 +15,9 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.api.Client;
 import org.pf4j.Extension;
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Extension
 @PluginDescriptor(
@@ -61,7 +64,7 @@ public class OneClickAlchPlugin extends Plugin
          cooldown--;
       }
 
-      itemExists = getWidgetItem(config.itemID()) != null;
+      itemExists = getItem(List.of(config.itemID())) != null;
    }
 
    @Subscribe
@@ -84,7 +87,7 @@ public class OneClickAlchPlugin extends Plugin
       if(!event.getMenuOption().equals("One Click Alch"))
          return;
 
-      Widget item = getWidgetItem(config.itemID());
+      Widget item = getItem(List.of(config.itemID()));
 
       if (item == null)
          return;
@@ -93,7 +96,7 @@ public class OneClickAlchPlugin extends Plugin
 
       event.setMenuOption("Cast");
       event.setMenuTarget("High Level Alchemy -> Item");
-      event.setId(item.getId());
+      event.setId(0);
       event.setMenuAction(MenuAction.WIDGET_TARGET_ON_WIDGET);
       event.setParam0(item.getIndex());
       event.setParam1(WidgetInfo.INVENTORY.getId());
@@ -106,18 +109,32 @@ public class OneClickAlchPlugin extends Plugin
       client.setSelectedSpellName("<col=00ff00>" + spell.getName() + "</col>");
       client.setSelectedSpellWidget(spell.getId());
       client.setSelectedSpellChildIndex(-1);
+      client.setSelectedSpellItemId(-1);
    }
 
-   public Widget getWidgetItem(int id) {
+   public Widget getItem(Collection<Integer> ids) {
+      List<Widget> matches = getItems(ids);
+      return matches.size() != 0 ? matches.get(0) : null;
+   }
+
+   public ArrayList<Widget> getItems(Collection<Integer> ids)
+   {
+      client.runScript(6009, 9764864, 28, 1, -1);
       Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-      if (inventoryWidget != null && inventoryWidget.getChildren() != null) {
-         Widget[] items = inventoryWidget.getChildren();
-         for (Widget item : items) {
-            if (id == item.getId()) {
-               return item;
+      ArrayList<Widget> matchedItems = new ArrayList<>();
+
+      if (inventoryWidget != null)
+      {
+         Widget[] items = inventoryWidget.getDynamicChildren();
+         if (items == null) return matchedItems;
+         for(Widget item : items)
+         {
+            if (ids.contains(item.getItemId()))
+            {
+               matchedItems.add(item);
             }
          }
       }
-      return null;
+      return matchedItems;
    }
 }
