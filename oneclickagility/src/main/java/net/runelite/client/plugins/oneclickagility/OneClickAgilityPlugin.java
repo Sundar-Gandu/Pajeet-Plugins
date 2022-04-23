@@ -384,7 +384,7 @@ public class OneClickAgilityPlugin extends Plugin
             hasAlched = false;
         }
 
-        if (event.getMenuOption().equals("Walk here"))
+        if (event.getMenuAction() == MenuAction.WALK)
         {
             event.consume();
             LocalPoint point = LocalPoint.fromWorld(client, new WorldPoint(event.getParam0(),event.getParam1(),client.getPlane()));
