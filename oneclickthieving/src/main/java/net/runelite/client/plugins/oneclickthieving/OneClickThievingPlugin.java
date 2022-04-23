@@ -147,7 +147,7 @@ public class OneClickThievingPlugin extends Plugin
          {
             setEntry(event, client.createMenuEntry(
                     "Pickpocket",
-                     npc.getName(),
+                     "Pickpocket",
                      npc.getIndex(),
                      MenuAction.NPC_THIRD_OPTION.getId(),
                      0,
@@ -243,7 +243,7 @@ public class OneClickThievingPlugin extends Plugin
 
       if (config.enableCoinPouch() && coinpouch != null && coinpouch.getItemQuantity() == 28)
       {
-         setEntry(event, itemEntry(coinpouch, 3));
+         setEntry(event, itemEntry(coinpouch, 2));
       }
       //dodgy necklace
       else if(config.enableNecklace() && getItem(List.of(DODGY_NECKLACE_ID)) != null && !isItemEquipped(List.of(DODGY_NECKLACE_ID)))
