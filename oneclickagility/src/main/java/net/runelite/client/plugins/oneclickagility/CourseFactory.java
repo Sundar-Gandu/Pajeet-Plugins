@@ -11,6 +11,20 @@ public class CourseFactory
     {
         switch (course)
         {
+                case GNOME:
+                return new Course(
+                        new ArrayList<>(Arrays.asList(
+                                new ObstacleArea(2470,2488,3435,3440,0,23145),
+                                new SpecificObstacleArea(2471,2476,3426,3429,0,
+                                        23134, new WorldPoint(2473, 3425, 0)),
+                                new ObstacleArea(2471,2476,3422,3424,1,23559),
+                                new ObstacleArea(2472,2475,3418,3421,2,23557),
+                                new ObstacleArea(2483,2488,3418,3421,2,23560),
+                                new ObstacleArea(2482,2488,3419,3425,0,23135),
+                                new SpecificObstacleArea(2482,2489,3427,3431,0,
+                                        23138, new WorldPoint(2484, 3431, 0))
+                        ))
+                );
             case DRAYNOR_VILLAGE:
                 return new Course(
                         new ArrayList<>(Arrays.asList(
