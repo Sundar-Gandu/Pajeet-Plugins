@@ -2,6 +2,7 @@ package net.runelite.client.plugins.oneclickagility;
 
 public enum AgilityCourse
 {
+    GNOME,
     DRAYNOR_VILLAGE,
     AL_KHARID,
     VARROCK,
