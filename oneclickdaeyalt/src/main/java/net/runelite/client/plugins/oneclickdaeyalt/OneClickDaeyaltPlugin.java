@@ -97,8 +97,13 @@ public class OneClickDaeyaltPlugin extends Plugin
     @Subscribe
     private void onClientTick(ClientTick event)
     {
-        if (client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
+        if (client.getLocalPlayer() == null
+              || client.getGameState() != GameState.LOGGED_IN
+              || client.isMenuOpen()
+              || client.getWidget(378,78) != null)//login button
+        {
             return;
+        }
 
         if (client.getLocalPlayer().getWorldLocation().getRegionID() == DAEYALT_MINE_REGION)
         {
@@ -136,7 +141,7 @@ public class OneClickDaeyaltPlugin extends Plugin
 
         if (essence != null)
         {
-            event.setMenuEntry(client.createMenuEntry(
+            setEntry(event, client.createMenuEntry(
                     "Mine",
                     "Daeyalt Essence",
                     ObjectID.DAEYALT_ESSENCE_39095,
@@ -149,6 +154,23 @@ public class OneClickDaeyaltPlugin extends Plugin
         else
         {
            event.consume();
+        }
+    }
+
+    private void setEntry(MenuOptionClicked event, MenuEntry entry)
+    {
+        try
+        {
+            event.setMenuOption(entry.getOption());
+            event.setMenuTarget(entry.getTarget());
+            event.setId(entry.getIdentifier());
+            event.setMenuAction(entry.getType());
+            event.setParam0(entry.getParam0());
+            event.setParam1(entry.getParam1());
+        }
+        catch (Exception e)
+        {
+            event.consume();
         }
     }
 }

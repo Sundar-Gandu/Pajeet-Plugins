@@ -57,7 +57,10 @@ public class OneClickRunEnablePlugin extends Plugin
    @Subscribe
    private void onClientTick(ClientTick event)
    {
-      if (client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
+      if (client.getLocalPlayer() == null
+            || client.getGameState() != GameState.LOGGED_IN
+            || client.isMenuOpen()
+            || client.getWidget(378,78) != null)//login button
          return;
 
       if (client.getVarpValue(173) == 0 && client.getEnergy() >= Math.min(config.minimumRun(),100) && !clicked)

@@ -1,4 +1,4 @@
-version = "1.2.2"
+version = "1.2.3"
 
 project.extra["PluginName"] = "One Click Agility"
 project.extra["PluginDescription"] = "Reclined gaming"

@@ -121,8 +121,10 @@ public class OneClickDropperPlugin extends Plugin
               || client.getItemContainer(InventoryID.BANK) != null
               || client.getWidget(WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER) != null
               || client.isMenuOpen()
-      )
+              || client.getWidget(378,78) != null)//login button
+      {
          return;
+      }
 
       if(dropping)
       {

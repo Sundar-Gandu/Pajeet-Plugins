@@ -70,8 +70,13 @@ public class OneClickAlchPlugin extends Plugin
    @Subscribe
    private void onClientTick(ClientTick event)
    {
-      if(client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
+      if(client.getLocalPlayer() == null
+            || client.getGameState() != GameState.LOGGED_IN
+            || client.isMenuOpen()
+            || client.getWidget(378,78) != null)//login button
+      {
          return;
+      }
 
       if (cooldown == 0
               && client.getVarbitValue(4070) == 0 //spellbook varbit

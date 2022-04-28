@@ -1,4 +1,4 @@
-version = "1.0.1"
+version = "1.0.2"
 
 project.extra["PluginName"] = "One Click Run Enable"
 project.extra["PluginDescription"] = "Click Anywhere to reenable run"

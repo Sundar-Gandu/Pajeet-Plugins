@@ -144,7 +144,13 @@ public class OneClickAgilityPlugin extends Plugin
     @Subscribe (priority = 1)
     private void onClientTick(ClientTick event)
     {
-        if(client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen()) return;
+        if(client.getLocalPlayer() == null
+              || client.getGameState() != GameState.LOGGED_IN
+              || client.isMenuOpen()
+              || client.getWidget(378,78) != null)//login button
+        {
+            return;
+        }
         String text;
 
         if(course.getCurrentObstacleArea(client.getLocalPlayer()) == null)

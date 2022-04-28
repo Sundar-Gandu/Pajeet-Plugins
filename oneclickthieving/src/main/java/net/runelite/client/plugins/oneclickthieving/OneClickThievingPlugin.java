@@ -124,8 +124,14 @@ public class OneClickThievingPlugin extends Plugin
    @Subscribe
    private void onClientTick(ClientTick event)
    {
-      if(!config.clickOverride() || client.getLocalPlayer() == null || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
+      if(!config.clickOverride()
+            || client.getLocalPlayer() == null
+            || client.getGameState() != GameState.LOGGED_IN
+            || client.isMenuOpen()
+            || client.getWidget(378,78) != null)//login button
+      {
          return;
+      }
       client.insertMenuItem(
               "One Click Pickpocket",
               "",
