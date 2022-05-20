@@ -25,6 +25,7 @@
 
 rootProject.name = "Sundar External Plugins"
 
+include(":catfacts")
 include(":disablefakeclaw")
 include(":extendedchat")
 include(":oneclick2tick")
