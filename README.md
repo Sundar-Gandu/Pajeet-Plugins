@@ -1,7 +1,7 @@
 # Pajeet Plugins
 External plugins for OpenOSRS, created by Sundar
 
-Join the discord server: https://discord.com/invite/MD8GYe2pWH
+Join the discord server: https://discord.com/invite/BRY8J6mx9E
 
 ## How to install
 Add this repository to your client:
@@ -19,4 +19,4 @@ A one click plugin is a menu entry swapper that swaps the menu entry after you c
 This way, you can be sure that you are clicking the "correct" menu entry every time.
 One click plugins do not have any automation, you have to manually click for every action to happen.
 
-[discord server]: <https://discord.com/invite/MD8GYe2pWH>
+[discord server]: <https://discord.com/invite/BRY8J6mx9E>
