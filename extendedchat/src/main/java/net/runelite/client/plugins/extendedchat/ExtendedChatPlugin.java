@@ -92,14 +92,14 @@ public class ExtendedChatPlugin extends Plugin
          {
             try
             {
-               String chatBoxText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-               chatBoxText = chatBoxText + (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+               String chatBoxText = client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT);
+               chatBoxText = chatBoxText + Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
                if (chatBoxText.length() > 80)
                {
                   chatBoxText = chatBoxText.substring(0, 80);
                }
 
-               client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, chatBoxText);
+               client.setVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT, chatBoxText);
             } catch (UnsupportedFlavorException | IOException | HeadlessException var3)
             {
             }
@@ -129,10 +129,10 @@ public class ExtendedChatPlugin extends Plugin
       {
          if (e.getKeyCode() == KeyEvent.VK_ENTER && isChatEnabled())
          {
-            int inputType = client.getVar(VarClientInt.INPUT_TYPE);
+            int inputType = client.getVarcIntValue(VarClientInt.INPUT_TYPE);
             if (inputType == InputType.PRIVATE_MESSAGE.getType() || inputType == InputType.NONE.getType())
             {
-               VarClientStr var;
+               int var;
                if (inputType == InputType.PRIVATE_MESSAGE.getType())
                {
                   var = VarClientStr.INPUT_TEXT;
@@ -141,7 +141,7 @@ public class ExtendedChatPlugin extends Plugin
                {
                   var = VarClientStr.CHATBOX_TYPED_TEXT;
                }
-               String text = client.getVar(var);
+               String text = client.getVarcStrValue(var);
                if (text == null || "".equals(text))
                {
                   return;
@@ -152,7 +152,7 @@ public class ExtendedChatPlugin extends Plugin
                   String cleanedText = censorMessage(text, outgoingWordFilter);
                   if (!cleanedText.equals(text))
                   {
-                     client.setVar(var, cleanedText);
+                     client.setVarcStrValue(var, cleanedText);
                   }
                   log.debug("text:{}, censored:{}", text, cleanedText);
                }
@@ -185,7 +185,7 @@ public class ExtendedChatPlugin extends Plugin
 
          if (config.previouskeybind().matches(e) && isChatEnabled())
          {
-            client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, lastMessage);
+            client.setVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT, lastMessage);
          }
       }
 
